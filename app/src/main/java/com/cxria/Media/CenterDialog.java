@@ -42,9 +42,9 @@ public class CenterDialog extends BaseCenterDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mMainActivity.setCameraColor(mList.get(position));
-//                getDialog().dismiss();
                 sector=position;
                 mLvAdapter.notifyDataSetChanged();
+                getDialog().dismiss();
 
             }
         });

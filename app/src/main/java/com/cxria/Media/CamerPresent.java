@@ -37,7 +37,7 @@ public class CamerPresent implements CameraControler.presenr{
     private Camera.Parameters mParams;
     private List<Camera.Size> mPreviewSizes;
     private float mRatio;
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private boolean isHaveVoice=true;
 
     public CamerPresent(CameraControler.view view) {
         mView = view;
@@ -181,6 +181,11 @@ public class CamerPresent implements CameraControler.presenr{
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+                if(isHaveVoice){
+                    MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_voice);
+                    mediaPlayer.start();
+                }
+                Toast.makeText((Context) mView, "拍照中...", Toast.LENGTH_SHORT).show();
                 FileOutputStream fos = null;
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 Matrix matrix = new Matrix();
