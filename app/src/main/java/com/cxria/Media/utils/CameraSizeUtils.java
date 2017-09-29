@@ -22,29 +22,39 @@ public class CameraSizeUtils {
      */
     public static Camera.Size findBestPictureSize(List<Camera.Size> sizes, Camera.Size defaultSize, float minRatio) {
         final int MIN_PIXELS = 320 * 480;
-
+        float minRatios=5f;
+        int i = 0;
 //        sortSizes(sizes);
-
         Iterator<Camera.Size> it = sizes.iterator();
         while (it.hasNext()) {
             Camera.Size size = it.next();
-            //移除不满足比例的尺寸
-            if ((float) size.height / size.width <= minRatio) {
-                it.remove();
-                continue;
-            }
-            //移除太小的尺寸
-            if (size.width * size.height < MIN_PIXELS) {
-                it.remove();
+            Log.i("size1: ", size.width + " " + size.height);
+            float abs = Math.abs((float) size.width / size.height - minRatio);
+            if (abs < minRatios) {
+                minRatios = abs;
+                i++;
             }
         }
-
-        // 返回符合条件中最大尺寸的一个
-        if (!sizes.isEmpty()) {
-            return sizes.get(0);
-        }
+        return sizes.get(i-1);
+//            //移除不满足比例的尺寸
+//            if ((float) size.height / size.width <= minRatio) {
+//                it.remove();
+//                continue;
+//            }
+//            //移除太小的尺寸
+//            if (size.width * size.height < MIN_PIXELS) {
+//                it.remove();
+//            }
+//        }
+//
+//        // 返回符合条件中最大尺寸的一个
+//        if (!sizes.isEmpty()) {
+////            Log.i("size: ", sizes.get(sizes.size()-1).width+" "+sizes.get(sizes.size()-1).height);
+////            return sizes.get(0);
+//            return sizes.get(sizes.size()-1);
+//        }
         // 没得选，默认吧
-        return defaultSize;
+//        return defaultSize;
     }
     /**
      * @param sizes
@@ -60,28 +70,66 @@ public class CameraSizeUtils {
         boolean isBestSize = (pictureHeight / (float)pictureWidth) > minRatio;
 //        sortSizes(sizes);
 
-        Iterator<Camera.Size> it = sizes.iterator();
-        while (it.hasNext()) {
-            Camera.Size size = it.next();
-            if ((float) size.height / size.width <= minRatio) {
-                it.remove();
-                continue;
-            }
-
-            // 找到同样的比例，直接返回
-            if (isBestSize && size.width * pictureHeight == size.height * pictureWidth) {
-                return size;
-            }
-        }
+//        Iterator<Camera.Size> it = sizes.iterator();
+//        while (it.hasNext()) {
+//            Camera.Size size = it.next();
+//            if ((float) size.height / size.width <= minRatio) {
+//                it.remove();
+//                continue;
+//            }
+//
+//            // 找到同样的比例，直接返回
+//            if (isBestSize && size.width * pictureHeight == size.height * pictureWidth) {
+//                return size;
+//            }
+//        }
 
         // 未找到同样的比例的，返回尺寸最大的
         if (!sizes.isEmpty()) {
-            return sizes.get(0);
+//            return sizes.get(0);
+            return sizes.get(sizes.size()-1);
         }
 
+        Log.i("size1OPer: ", sizes.get(sizes.size()-1).width+" "+sizes.get(sizes.size()-1).height);
         // 没得选，默认吧
         return defaultSize;
     }
+
+
+    public static Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.1;
+        double targetRatio = (double) w / h;
+        if (sizes == null) return null;
+
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+        int targetHeight = h;
+
+        // Try to find an size match aspect ratio and size
+        for (Camera.Size size : sizes) {
+            Log.i("size: ", size.width+" "+size.height);
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        // Cannot find the one match the aspect ratio, ignore the requirement
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        Log.i("sizeOPer: ", optimalSize.width+" "+optimalSize.height);
+        return optimalSize;
+    }
+
 
     public static byte[] compressBitmap(Bitmap bitmap, float size) {
         if (bitmap == null) {
