@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.cxria.Media.MainActivity">
+    <SurfaceView android:layout_width="match_parent"
+                 android:id="@+id/surfaceview"
+                 android:layout_centerInParent="true"
+                 android:layout_height="match_parent"/>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <RelativeLayout android:layout_width="match_parent"
+                        android:id="@+id/rl_line"
+                        android:visibility="gone"
+                        android:layout_height="match_parent">
+                <include layout="@layout/line_layout"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="50dp">
+            <ImageView android:layout_width="28dp"
+                       android:id="@+id/iv_back"
+                       android:layout_centerVertical="true"
+                       android:layout_marginLeft="10dp"
+                       android:src="@mipmap/ic_back"
+                       android:layout_height="28dp"/>
+            <ImageView android:layout_width="30dp"
+                       android:id="@+id/iv_setting"
+                       android:layout_centerVertical="true"
+                       android:layout_alignParentRight="true"
+                       android:layout_marginRight="10dp"
+                       android:src="@mipmap/ic_setting"
+                       android:layout_height="30dp"/>
+        </RelativeLayout>
+        <LinearLayout android:layout_width="180dp"
+                      android:id="@+id/ll_setting"
+                      android:clickable="true"
+                      android:orientation="vertical"
+                      android:visibility="visible"
+                      android:background="#5a000000"
+                      android:layout_alignParentRight="true"
+                      android:layout_height="match_parent">
+            <include layout="@layout/setting_layout"/>
+        </LinearLayout>
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_height="50dp">
+            <ImageView android:layout_width="42dp"
+                       android:layout_height="42dp"
+                       android:id="@+id/iv_play"
+                       android:layout_centerVertical="true"
+                       android:layout_alignParentRight="true"
+                       android:layout_marginRight="10dp"
+                       android:src="@mipmap/ic_play"
+                       />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/text"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Hello World!"/>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:visibility="gone"
+                      android:layout_alignParentBottom="true"
+                      android:orientation="horizontal"
+                      android:layout_height="wrap_content">
+            <Button android:layout_width="wrap_content"
+                    android:id="@+id/camera"
+                    android:text="stop"
+                    android:layout_height="wrap_content"/>
+            <Button android:layout_width="wrap_content"
+                    android:id="@+id/btn_record_wav"
+                    android:layout_height="wrap_content"/>
+            <Button android:layout_width="wrap_content"
+                    android:id="@+id/btn_record_amr"
+                    android:layout_height="wrap_content"/>
+            <Button android:layout_width="wrap_content"
+                    android:id="@+id/btn_stop"
+                    android:text="stop"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
