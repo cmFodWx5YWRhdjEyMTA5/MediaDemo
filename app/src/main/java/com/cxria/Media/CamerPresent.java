@@ -37,7 +37,6 @@ public class CamerPresent implements CameraControler.presenr{
     private Camera.Parameters mParams;
     private List<Camera.Size> mPreviewSizes;
     private float mRatio;
-    private boolean isHaveVoice=true;
 
     public CamerPresent(CameraControler.view view) {
         mView = view;
@@ -74,7 +73,8 @@ public class CamerPresent implements CameraControler.presenr{
         mRatio = width / height;
 //        final float ratio = (float) mSurfaceview.getWidth() / mSurfaceview.getHeight();
         mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        cameraInit();
+        //线程安全问题。
+       cameraInit();
     }
 
     private void cameraInit() {
@@ -173,6 +173,10 @@ public class CamerPresent implements CameraControler.presenr{
         mCamera.setParameters(mParams);
     }
 
+    int voiceLable;
+    public void setVoiceDev(int dev){
+        this.voiceLable=dev;
+    }
     /**
      * 拍照
      */
@@ -181,10 +185,16 @@ public class CamerPresent implements CameraControler.presenr{
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                if(isHaveVoice){
+                if(voiceLable==0){
+
+                }else if(voiceLable==1){
                     MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_voice);
                     mediaPlayer.start();
+                }else if(voiceLable==2){
+//                    MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_voice);
+//                    mediaPlayer.start();
                 }
+
                 Toast.makeText((Context) mView, "拍照中...", Toast.LENGTH_SHORT).show();
                 FileOutputStream fos = null;
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);

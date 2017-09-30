@@ -1,21 +1,28 @@
 package com.cxria.Media;
 
-import android.graphics.Color;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.IdRes;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cxria.Media.utils.AudioFileFunc;
 import com.cxria.Media.utils.AudioRecordFunc;
@@ -78,15 +85,56 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
     Switch mSwitchWrite;
     @BindView(R.id.taglayoutScreen)
     TagLayout mTaglayoutScreen;
+    @BindView(R.id.rl_camera_setting)
+    RelativeLayout mRlCameraSetting;
+    @BindView(R.id.rl_bottom_setting)
+    RelativeLayout mRlBottomSetting;
+    @BindView(R.id.tv_voice)
+    TextView mTvVoice;
+    @BindView(R.id.tv_no_voice)
+    RadioButton mTvNoVoice;
+    @BindView(R.id.tv_voice_1)
+    RadioButton mTvVoice1;
+    @BindView(R.id.tv_voice_2)
+    RadioButton mTvVoice2;
+    @BindView(R.id.rg_voice)
+    RadioGroup mRgVoice;
+    @BindView(R.id.tv_sp)
+    TextView mTvSp;
+    @BindView(R.id.tv_all)
+    RadioButton mTvAll;
+    @BindView(R.id.tv_43)
+    RadioButton mTv43;
+    @BindView(R.id.tv_169)
+    RadioButton mTv169;
+    @BindView(R.id.rg_screen)
+    RadioGroup mRgScreen;
+    @BindView(R.id.tv_light)
+    TextView mTvLight;
+    @BindView(R.id.sb_light)
+    SeekBar mSbLight;
+    @BindView(R.id.ll_screen_setting)
+    LinearLayout mLlScreenSetting;
+    @BindView(R.id.tv_top)
+    TextView mTvTop;
+    @BindView(R.id.tv_bottom)
+    TextView mTvBottom;
+    @BindView(R.id.tv_left)
+    TextView mTvLeft;
+    @BindView(R.id.tv_right)
+    TextView mTvRight;
+
     private int mState = -1;    //-1:没再录制，0：录制wav，1：录制amr
     private UIHandler uiHandler;
     private UIThread uiThread;
     private CamerPresent mCamerPresent;
     private boolean isMedia;
     private boolean isShowSetting;
-    private List<TextView> mTextViewListWrite=new ArrayList<>();
-    private List<TextView> mTextViewListScreen=new ArrayList<>();
-    private List<String> mListColor=new ArrayList<>();
+    private List<TextView> mTextViewListWrite = new ArrayList<>();
+    private List<TextView> mTextViewListScreen = new ArrayList<>();
+    private List<String> mListColor = new ArrayList<>();
+    private WindowManager.LayoutParams mLp;
+
     @Override
     int getLayout() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -101,74 +149,98 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
         mCamerPresent.init(mSurfaceview);
         uiHandler = new UIHandler();
         setListener();
-    }
-
-    public void initLayout(List<String> mWidthList) {
-        mTextViewListWrite.clear();
-        for (int i = 0; i < mWidthList.size(); i++) {
-            final TextView tv = ViewUtils.getTextView(this);
-            tv.setText(mWidthList.get(i));
-            mTaglayout.addView(tv);
-            mTextViewListWrite.add(tv);
-            //监听
-            final int finalI = i;
-            if(i==0){
-                mTextViewListWrite.get(0).setTextColor(getResources().getColor(R.color.color_ff0008));
-                mTextViewListWrite.get(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg_check));
-            }
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (int j = 0; j < mTextViewListWrite.size(); j++) {
-                        if(j== finalI){
-                            mTextViewListWrite.get(j).setTextColor(getResources().getColor(R.color.color_ff0008));
-                            mTextViewListWrite.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg_check));
-                        }else {
-                            mTextViewListWrite.get(j).setTextColor(getResources().getColor(R.color.color_dadada));
-                            mTextViewListWrite.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg));
-                        }
-                    }
-                    mCamerPresent.setSupportedWhiteBalance(tv.getText().toString());
-                }
-            });
+        mLp = this.getWindow().getAttributes();
+        mSbLight.setMax(255);
+        //屏幕亮度
+        try {
+            int anInt = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            mSbLight.setProgress(anInt);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
         }
+        ((RadioButton)mRgScreen.getChildAt(0)).setChecked(true);
+        ((RadioButton)mRgVoice.getChildAt(0)).setChecked(true);
     }
 
-    public void initScreenLayout(List<String> mScreenList) {
-        mTextViewListScreen.clear();
-        for (int i = 0; i < mScreenList.size(); i++) {
-            final TextView tv = ViewUtils.getTextView(this);
-            tv.setText(mScreenList.get(i));
-            mTaglayoutScreen.addView(tv);
-            mTextViewListScreen.add(tv);
-            //监听
-            final int finalI = i;
-            if(i==0){
-                mTextViewListScreen.get(0).setTextColor(getResources().getColor(R.color.color_ffe100));
-                mTextViewListScreen.get(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_screen_bg_check));
-            }
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (int j = 0; j < mTextViewListScreen.size(); j++) {
-                        if(j== finalI){
-                            mTextViewListScreen.get(j).setTextColor(getResources().getColor(R.color.color_ffe100));
-                            mTextViewListScreen.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_screen_bg_check));
-                        }else {
-                            mTextViewListScreen.get(j).setTextColor(getResources().getColor(R.color.color_dadada));
-                            mTextViewListScreen.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg));
-                        }
+    public void initLayout(final List<String> mWidthList) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTextViewListWrite.clear();
+                mTaglayout.removeAllViews();
+                for (int i = 0; i < mWidthList.size(); i++) {
+                    final TextView tv = ViewUtils.getTextView(MainActivity.this);
+                    tv.setText(mWidthList.get(i));
+                    mTaglayout.addView(tv);
+                    mTextViewListWrite.add(tv);
+                    //监听
+                    final int finalI = i;
+                    if (i == 0) {
+                        mTextViewListWrite.get(0).setTextColor(getResources().getColor(R.color.color_ff0008));
+                        mTextViewListWrite.get(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg_check));
                     }
-                    mCamerPresent.setSupportedSceneModes(tv.getText().toString());
-
+                    tv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            for (int j = 0; j < mTextViewListWrite.size(); j++) {
+                                if (j == finalI) {
+                                    mTextViewListWrite.get(j).setTextColor(getResources().getColor(R.color.color_ff0008));
+                                    mTextViewListWrite.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg_check));
+                                } else {
+                                    mTextViewListWrite.get(j).setTextColor(getResources().getColor(R.color.color_dadada));
+                                    mTextViewListWrite.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg));
+                                }
+                            }
+                            mCamerPresent.setSupportedWhiteBalance(tv.getText().toString());
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
     }
+
+    public void initScreenLayout(final List<String> mScreenList) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTextViewListScreen.clear();
+                mTaglayoutScreen.removeAllViews();
+                for (int i = 0; i < mScreenList.size(); i++) {
+                    final TextView tv = ViewUtils.getTextView(MainActivity.this);
+                    tv.setText(mScreenList.get(i));
+                    mTaglayoutScreen.addView(tv);
+                    mTextViewListScreen.add(tv);
+                    //监听
+                    final int finalI = i;
+                    if (i == 0) {
+                        mTextViewListScreen.get(0).setTextColor(getResources().getColor(R.color.color_ffe100));
+                        mTextViewListScreen.get(0).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_screen_bg_check));
+                    }
+                    tv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            for (int j = 0; j < mTextViewListScreen.size(); j++) {
+                                if (j == finalI) {
+                                    mTextViewListScreen.get(j).setTextColor(getResources().getColor(R.color.color_ffe100));
+                                    mTextViewListScreen.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_screen_bg_check));
+                                } else {
+                                    mTextViewListScreen.get(j).setTextColor(getResources().getColor(R.color.color_dadada));
+                                    mTextViewListScreen.get(j).setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_write_bg));
+                                }
+                            }
+                            mCamerPresent.setSupportedSceneModes(tv.getText().toString());
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     //获取到数据
-    public void initCameraList(List<String> listColor){
+    public void initCameraList(List<String> listColor) {
         mListColor.clear();
-       mListColor.addAll(listColor);
+        mListColor.addAll(listColor);
     }
 
     private void setListener() {
@@ -207,25 +279,111 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     CenterDialog instance = CenterDialog.getInstance(mListColor, MainActivity.this);
-                    instance.show(getSupportFragmentManager(),"");
+                    instance.show(getSupportFragmentManager(), "");
                     mLlSetting.setVisibility(View.GONE);
                     mSwitchColor.setChecked(false);
-                } else {
-                    mRlLine.setVisibility(View.GONE);
+                }
+            }
+        });
+        mSbLight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mLp.screenBrightness = Float.valueOf(progress) * (1f / 255f);
+                    getWindow().setAttributes(mLp);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        //屏幕比例
+        mRgScreen.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                for (int i = 0; i <mRgScreen.getChildCount(); i++) {
+                    if(((RadioButton)mRgScreen.getChildAt(i)).isChecked()){
+                        ((RadioButton)mRgScreen.getChildAt(i)).setChecked(true);
+                        setScreen(i);
+                    }
+                }
+            }
+        });
+        //音效
+        mRgVoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                for (int i = 0; i <mRgVoice.getChildCount(); i++) {
+                    if(((RadioButton)mRgVoice.getChildAt(i)).isChecked()){
+                        ((RadioButton)mRgVoice.getChildAt(i)).setChecked(true);
+                        mCamerPresent.setVoiceDev(i);
+                    }
                 }
             }
         });
     }
 
+    public void setScreen(int pos){
+        int width = ScreenUtils.instance().getWidth(this);
+        int height = ScreenUtils.instance().getHeight(this);
+        switch (pos){
+            //默认
+            case 0:
+                mTvTop.setVisibility(View.GONE);
+                mTvBottom.setVisibility(View.GONE);
+                mTvLeft.setVisibility(View.GONE);
+                mTvRight.setVisibility(View.GONE);
+                break;
+            //4：3
+            case 1:
+                mTvTop.setVisibility(View.GONE);
+                mTvBottom.setVisibility(View.GONE);
+                mTvLeft.setVisibility(View.VISIBLE);
+                mTvRight.setVisibility(View.VISIBLE);
+                //设置值
+                ViewGroup.LayoutParams params=mTvLeft.getLayoutParams();
+                params.width=(width-height*4/3)/2;
+                mTvLeft.setLayoutParams(params);
+                ViewGroup.LayoutParams paramR=mTvRight.getLayoutParams();
+                paramR.width=(width-height*4/3)/2;
+                mTvRight.setLayoutParams(paramR);
+            break;
+            //16：9
+            case 2:
+                mTvLeft.setVisibility(View.GONE);
+                mTvRight.setVisibility(View.GONE);
+                mTvTop.setVisibility(View.VISIBLE);
+                mTvBottom.setVisibility(View.VISIBLE);
+                //设置值
+                ViewGroup.LayoutParams paramT=mTvTop.getLayoutParams();
+                paramT.height=(height-width*1/2)/2;
+                mTvTop.setLayoutParams(paramT);
+                ViewGroup.LayoutParams paramB=mTvBottom.getLayoutParams();
+                paramB.height=(height-width*1/2)/2;
+                mTvBottom.setLayoutParams(paramB);
+            break;
+
+        }
+
+    }
+
     /**
      * 滤镜
+     *
      * @param value
      */
-    public void setCameraColor(String value){
+    public void setCameraColor(String value) {
         mCamerPresent.setSupportedColorEffects(value);
     }
 
-    @OnClick({R.id.iv_add_setting,R.id.iv_takphoto, R.id.iv_face, R.id.iv_bline, R.id.camera, R.id.iv_back, R.id.btn_record_wav, R.id.iv_setting, R.id.iv_back_setting, R.id.btn_record_amr, R.id.btn_stop})
+    @OnClick({R.id.iv_add_setting, R.id.iv_takphoto, R.id.iv_face, R.id.iv_bline, R.id.camera, R.id.iv_back, R.id.btn_record_wav, R.id.iv_setting, R.id.iv_back_setting, R.id.btn_record_amr, R.id.btn_stop})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.camera:
@@ -244,6 +402,7 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
                 break;
             case R.id.iv_setting:
                 mLlSetting.setVisibility(View.VISIBLE);
+                rotateyAnimSet(mLlSetting);
                 break;
             case R.id.iv_back_setting:
                 mLlSetting.setVisibility(View.GONE);
@@ -277,18 +436,54 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
 //                mCamerPresent.getSupportedWhiteBalance();
 //                mCamerPresent.getSupportedColorEffects();
 //                mCamerPresent.getSupportedSceneModes();
-                if(isShowSetting){
+                if (isShowSetting) {
                     mIvAddSetting.setImageResource(R.mipmap.ic_add_setting);
-                    mIvFace.setVisibility(View.GONE);
-                    mIvBline.setVisibility(View.GONE);
-                }else {
+                    mRlCameraSetting.setVisibility(View.GONE);
+                    mLlScreenSetting.setVisibility(View.GONE);
+                } else {
                     mIvAddSetting.setImageResource(R.mipmap.ic_remove_setting);
-                    mIvFace.setVisibility(View.VISIBLE);
-                    mIvBline.setVisibility(View.VISIBLE);
+                    mRlCameraSetting.setVisibility(View.VISIBLE);
+                    mLlScreenSetting.setVisibility(View.VISIBLE);
+                    rotateyAnimRun(mLlScreenSetting);
+                    rotateyAnimRun(mRlCameraSetting);
+
                 }
-                isShowSetting=!isShowSetting;
+                isShowSetting = !isShowSetting;
                 break;
         }
+    }
+
+    /**
+     * 位移动画
+     * @param view
+     */
+    public void rotateyAnimRun(View view){
+        ObjectAnimator//
+                .ofFloat(view, "alpha", 0F, 1F)//
+                .setDuration(400)//
+                .start();
+        ObjectAnimator//
+                .ofFloat(view, "translationX",  -360F, 0F)//
+                .setDuration(500)//
+                .start();
+        ObjectAnimator//
+                .ofFloat(view, "translationY", -360F, 0F)//
+                .setDuration(500)//
+                .start();
+    }
+    /**
+     * 位移动画
+     * @param view
+     */
+    public void rotateyAnimSet(View view){
+        ObjectAnimator//
+                .ofFloat(view, "alpha", 0F, 1F)//
+                .setDuration(400)//
+                .start();
+        ObjectAnimator//
+                .ofFloat(view, "translationX",  360F, 0F)//
+                .setDuration(500)//
+                .start();
     }
 
     /**

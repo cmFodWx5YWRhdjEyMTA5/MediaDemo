@@ -15,11 +15,16 @@
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent">
         <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+            <include layout="@layout/sp_layout"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="match_parent"
                         android:id="@+id/rl_line"
                         android:visibility="gone"
                         android:layout_height="match_parent">
                 <include layout="@layout/line_layout"/>
         </RelativeLayout>
+
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="50dp">
             <ImageView android:layout_width="28dp"
@@ -28,7 +33,6 @@
                        android:layout_marginLeft="10dp"
                        android:src="@mipmap/ic_back"
                        android:layout_height="28dp"/>
-
             <TextView android:layout_width="wrap_content"
                       android:text="退出"
                       android:textColor="@color/white"
@@ -65,6 +69,7 @@
             <include layout="@layout/setting_layout"/>
         </LinearLayout>
         <RelativeLayout android:layout_width="match_parent"
+                        android:id="@+id/rl_bottom_setting"
                         android:layout_alignParentBottom="true"
                         android:layout_height="50dp">
             <ImageView android:layout_width="42dp"
@@ -82,23 +87,38 @@
                        android:layout_centerVertical="true"
                        android:layout_marginRight="10dp"
                        android:src="@mipmap/ic_add_setting"/>
-            <ImageView android:layout_width="30dp"
-                       android:id="@+id/iv_face"
-                       android:layout_toRightOf="@id/iv_add_setting"
-                       android:layout_centerVertical="true"
-                       android:layout_marginLeft="20dp"
-                       android:visibility="gone"
-                       android:src="@mipmap/ic_face_flip"
-                       android:layout_height="30dp"/>
-            <ImageView android:layout_width="30dp"
-                       android:id="@+id/iv_bline"
-                       android:visibility="gone"
-                       android:layout_toRightOf="@id/iv_face"
-                       android:layout_centerVertical="true"
-                       android:layout_marginLeft="20dp"
-                       android:src="@mipmap/ic_bline"
-                       android:layout_height="30dp"/>
+            <RelativeLayout android:layout_width="wrap_content"
+                            android:id="@+id/rl_camera_setting"
+                            android:visibility="gone"
+                            android:layout_toRightOf="@id/iv_add_setting"
+                            android:layout_height="50dp">
+                <ImageView android:layout_width="30dp"
+                           android:id="@+id/iv_face"
+                           android:layout_centerVertical="true"
+                           android:layout_marginLeft="20dp"
+                           android:visibility="visible"
+                           android:src="@mipmap/ic_face_flip"
+                           android:layout_height="30dp"/>
+                <ImageView android:layout_width="30dp"
+                           android:id="@+id/iv_bline"
+                           android:visibility="visible"
+                           android:layout_toRightOf="@id/iv_face"
+                           android:layout_centerVertical="true"
+                           android:layout_marginLeft="20dp"
+                           android:src="@mipmap/ic_bline"
+                           android:layout_height="30dp"/>
+            </RelativeLayout>
         </RelativeLayout>
+        <LinearLayout android:layout_width="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="gone"
+                      android:id="@+id/ll_screen_setting"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginBottom="55dp"
+                      android:layout_alignParentBottom="true"
+                        android:layout_height="wrap_content">
+            <include layout="@layout/screen_layout"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

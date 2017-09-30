@@ -17,6 +17,7 @@ public interface CameraControler {
         void changeCamera();
         void openBline();
         void getPhoto();
+        void setVoiceDev(int dev);
     }
 
     interface view{

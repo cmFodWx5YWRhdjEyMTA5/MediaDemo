@@ -48,6 +48,7 @@ public abstract class BaseCenterDialog extends DialogFragment {
             int height = ScreenUtils.instance().getHeight(getContext());
             //得到LayoutParams
             WindowManager.LayoutParams params = window.getAttributes();
+            params.dimAmount =0f;
             //修改gravity
             params.gravity = Gravity.CENTER;
             params.width =width*2/5;
