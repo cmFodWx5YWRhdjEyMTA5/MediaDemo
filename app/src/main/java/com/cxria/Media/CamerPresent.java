@@ -270,7 +270,6 @@ public class CamerPresent implements CameraControler.presenr{
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 if(voiceLable==2){
-
                 }else if(voiceLable==0){
                     MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_1);
                     mediaPlayer.start();
@@ -279,7 +278,6 @@ public class CamerPresent implements CameraControler.presenr{
                     mediaPlayer.start();
                 }
 
-                Toast.makeText((Context) mView, "拍照中...", Toast.LENGTH_SHORT).show();
                 FileOutputStream fos = null;
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 Matrix matrix = new Matrix();
@@ -292,10 +290,10 @@ public class CamerPresent implements CameraControler.presenr{
                     fos.write(data);
                     fos.flush();
                     bitmap.recycle();
-                    Toast.makeText((Context) mView, "拍照成功", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally {
+                    Toast.makeText((Context) mView, "拍照成功", Toast.LENGTH_SHORT).show();
                     try {
                         if(fos!=null){
                             fos.close();
@@ -323,7 +321,7 @@ public class CamerPresent implements CameraControler.presenr{
 //            Camera.getCameraInfo(cameraCount,cameraInfo);
 //            for(int i = 0; i < cameraCount; i++ ) {
                 //现在是后置，变更为前置
-            if (isBackCamera) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
+            if (isBackCamera) {//代表摄像头的方位，CAMERA_FACING_FRONT前置  CAMERA_FACING_BACK后置
                     isBackCamera = false;
                     mCamera.stopPreview();//停掉原来摄像头的预览
                     mCamera.release();//释放资源
