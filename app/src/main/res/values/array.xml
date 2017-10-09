@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinners">
+        <item>1920x1080</item>
+        <item>1280x720</item>
+        <item>720x480</item>
+        <item>352x288</item>
+        <item>手机最高</item>
+    </string-array>
+</resources>

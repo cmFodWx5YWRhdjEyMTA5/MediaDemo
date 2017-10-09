@@ -1,17 +1,18 @@
 package com.cxria.Media;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -20,27 +21,25 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cxria.Media.utils.AudioFileFunc;
-import com.cxria.Media.utils.AudioRecordFunc;
-import com.cxria.Media.utils.ErrorCode;
-import com.cxria.Media.utils.MediaRecordFunc;
+import com.cxria.Media.utils.FileUtils;
 import com.cxria.Media.utils.ScreenUtils;
 import com.cxria.Media.utils.TagLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements CameraControler.view {
-    private final static int FLAG_WAV = 0;
-    private final static int FLAG_AMR = 1;
     @BindView(R.id.surfaceview)
     SurfaceView mSurfaceview;
     @BindView(R.id.text)
@@ -123,10 +122,17 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
     TextView mTvLeft;
     @BindView(R.id.tv_right)
     TextView mTvRight;
+    @BindView(R.id.sp_record)
+    Spinner mSpRecord;
+    @BindView(R.id.iv_file)
+    ImageView mIvFile;
+    @BindView(R.id.tv_video)
+    TextView mTvVideo;
+    private Timer timer = new Timer();
+    int cnt = 0;
+    private int recordQuality = 1;
 
-    private int mState = -1;    //-1:没再录制，0：录制wav，1：录制amr
-    private UIHandler uiHandler;
-    private UIThread uiThread;
+    private boolean mState; //录制状态
     private CamerPresent mCamerPresent;
     private boolean isMedia;
     private boolean isShowSetting;
@@ -147,7 +153,6 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
     void initView() {
         mCamerPresent = new CamerPresent(this);
         mCamerPresent.init(mSurfaceview);
-        uiHandler = new UIHandler();
         setListener();
         mLp = this.getWindow().getAttributes();
         mSbLight.setMax(255);
@@ -158,8 +163,9 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }
-        ((RadioButton)mRgScreen.getChildAt(0)).setChecked(true);
-        ((RadioButton)mRgVoice.getChildAt(0)).setChecked(true);
+        ((RadioButton) mRgScreen.getChildAt(0)).setChecked(true);
+        ((RadioButton) mRgVoice.getChildAt(0)).setChecked(true);
+        mSpRecord.setSelection(2);
     }
 
     public void initLayout(final List<String> mWidthList) {
@@ -298,6 +304,7 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
@@ -308,9 +315,9 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
         mRgScreen.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                for (int i = 0; i <mRgScreen.getChildCount(); i++) {
-                    if(((RadioButton)mRgScreen.getChildAt(i)).isChecked()){
-                        ((RadioButton)mRgScreen.getChildAt(i)).setChecked(true);
+                for (int i = 0; i < mRgScreen.getChildCount(); i++) {
+                    if (((RadioButton) mRgScreen.getChildAt(i)).isChecked()) {
+                        ((RadioButton) mRgScreen.getChildAt(i)).setChecked(true);
                         setScreen(i);
                     }
                 }
@@ -320,20 +327,35 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
         mRgVoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                for (int i = 0; i <mRgVoice.getChildCount(); i++) {
-                    if(((RadioButton)mRgVoice.getChildAt(i)).isChecked()){
-                        ((RadioButton)mRgVoice.getChildAt(i)).setChecked(true);
+                for (int i = 0; i < mRgVoice.getChildCount(); i++) {
+                    if (((RadioButton) mRgVoice.getChildAt(i)).isChecked()) {
+                        ((RadioButton) mRgVoice.getChildAt(i)).setChecked(true);
                         mCamerPresent.setVoiceDev(i);
                     }
                 }
             }
         });
+        //spinner
+        mSpRecord.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView v1 = (TextView) view;
+                v1.setTextColor(Color.WHITE); //可以随意设置自己要的颜色值
+                v1.setTextSize(12);
+                recordQuality = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
-    public void setScreen(int pos){
+    public void setScreen(int pos) {
         int width = ScreenUtils.instance().getWidth(this);
         int height = ScreenUtils.instance().getHeight(this);
-        switch (pos){
+        switch (pos) {
             //默认
             case 0:
                 mTvTop.setVisibility(View.GONE);
@@ -348,13 +370,13 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
                 mTvLeft.setVisibility(View.VISIBLE);
                 mTvRight.setVisibility(View.VISIBLE);
                 //设置值
-                ViewGroup.LayoutParams params=mTvLeft.getLayoutParams();
-                params.width=(width-height*4/3)/2;
+                ViewGroup.LayoutParams params = mTvLeft.getLayoutParams();
+                params.width = (width - height * 4 / 3) / 2;
                 mTvLeft.setLayoutParams(params);
-                ViewGroup.LayoutParams paramR=mTvRight.getLayoutParams();
-                paramR.width=(width-height*4/3)/2;
+                ViewGroup.LayoutParams paramR = mTvRight.getLayoutParams();
+                paramR.width = (width - height * 4 / 3) / 2;
                 mTvRight.setLayoutParams(paramR);
-            break;
+                break;
             //16：9
             case 2:
                 mTvLeft.setVisibility(View.GONE);
@@ -362,13 +384,13 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
                 mTvTop.setVisibility(View.VISIBLE);
                 mTvBottom.setVisibility(View.VISIBLE);
                 //设置值
-                ViewGroup.LayoutParams paramT=mTvTop.getLayoutParams();
-                paramT.height=(height-width*1/2)/2;
+                ViewGroup.LayoutParams paramT = mTvTop.getLayoutParams();
+                paramT.height = (height - width * 1 / 2) / 2;
                 mTvTop.setLayoutParams(paramT);
-                ViewGroup.LayoutParams paramB=mTvBottom.getLayoutParams();
-                paramB.height=(height-width*1/2)/2;
+                ViewGroup.LayoutParams paramB = mTvBottom.getLayoutParams();
+                paramB.height = (height - width * 1 / 2) / 2;
                 mTvBottom.setLayoutParams(paramB);
-            break;
+                break;
 
         }
 
@@ -383,19 +405,16 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
         mCamerPresent.setSupportedColorEffects(value);
     }
 
-    @OnClick({R.id.iv_add_setting, R.id.iv_takphoto, R.id.iv_face, R.id.iv_bline, R.id.camera, R.id.iv_back, R.id.btn_record_wav, R.id.iv_setting, R.id.iv_back_setting, R.id.btn_record_amr, R.id.btn_stop})
+    @OnClick({R.id.iv_add_setting,R.id.iv_file, R.id.iv_takphoto, R.id.iv_play, R.id.iv_face, R.id.iv_bline, R.id.camera, R.id.iv_back, R.id.btn_record_wav, R.id.iv_setting, R.id.iv_back_setting, R.id.btn_record_amr, R.id.btn_stop})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.camera:
                 break;
             case R.id.btn_record_wav:
-                record(FLAG_WAV);
                 break;
             case R.id.btn_record_amr:
-                record(FLAG_AMR);
                 break;
             case R.id.btn_stop:
-                stop();
                 break;
             case R.id.iv_back:
                 finish();
@@ -422,8 +441,25 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
             case R.id.iv_play:
                 if (!isMedia) {
                     mIvPlay.setImageResource(R.mipmap.ic_pause);
+                    startTimer();
+                    cnt = 0;
+                    //录制开始
+                    mState = mCamerPresent.startRecording(recordQuality);
                 } else {
                     mIvPlay.setImageResource(R.mipmap.ic_play);
+                    if (timer != null) {
+                        timer.cancel();
+                        timer = null;
+                    }
+                    boolean isStop = mCamerPresent.stopRecording();
+                    if (isStop) {
+                        Toast.makeText(this, "视频保存在" + FileUtils.PHOTO_PATH, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "视频录制失败", Toast.LENGTH_SHORT).show();
+                    }
+                    //录制完成
+                    mState = false;
+
                 }
                 isMedia = !isMedia;
                 break;
@@ -433,9 +469,6 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
                 break;
             case R.id.iv_add_setting:
                 //setting
-//                mCamerPresent.getSupportedWhiteBalance();
-//                mCamerPresent.getSupportedColorEffects();
-//                mCamerPresent.getSupportedSceneModes();
                 if (isShowSetting) {
                     mIvAddSetting.setImageResource(R.mipmap.ic_add_setting);
                     mRlCameraSetting.setVisibility(View.GONE);
@@ -446,205 +479,100 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
                     mLlScreenSetting.setVisibility(View.VISIBLE);
                     rotateyAnimRun(mLlScreenSetting);
                     rotateyAnimRun(mRlCameraSetting);
-
                 }
                 isShowSetting = !isShowSetting;
                 break;
-        }
-    }
-
-    /**
-     * 位移动画
-     * @param view
-     */
-    public void rotateyAnimRun(View view){
-        ObjectAnimator//
-                .ofFloat(view, "alpha", 0F, 1F)//
-                .setDuration(400)//
-                .start();
-        ObjectAnimator//
-                .ofFloat(view, "translationX",  -360F, 0F)//
-                .setDuration(500)//
-                .start();
-        ObjectAnimator//
-                .ofFloat(view, "translationY", -360F, 0F)//
-                .setDuration(500)//
-                .start();
-    }
-    /**
-     * 位移动画
-     * @param view
-     */
-    public void rotateyAnimSet(View view){
-        ObjectAnimator//
-                .ofFloat(view, "alpha", 0F, 1F)//
-                .setDuration(400)//
-                .start();
-        ObjectAnimator//
-                .ofFloat(view, "translationX",  360F, 0F)//
-                .setDuration(500)//
-                .start();
-    }
-
-    /**
-     * 开始录音
-     *
-     * @param mFlag，0：录制wav格式，1：录音amr格式
-     */
-    private void record(int mFlag) {
-        if (mState != -1) {
-            Message msg = new Message();
-            Bundle b = new Bundle();// 存放数据
-            b.putInt("cmd", CMD_RECORDFAIL);
-            b.putInt("msg", ErrorCode.E_STATE_RECODING);
-            msg.setData(b);
-            uiHandler.sendMessage(msg); // 向Handler发送消息,更新UI
-            return;
-        }
-        int mResult = -1;
-        switch (mFlag) {
-            case FLAG_WAV:
-                AudioRecordFunc mRecord_1 = AudioRecordFunc.getInstance();
-                mResult = mRecord_1.startRecordAndFile();
-                break;
-            case FLAG_AMR:
-                MediaRecordFunc mRecord_2 = MediaRecordFunc.getInstance();
-                mResult = mRecord_2.startRecordAndFile();
+            case R.id.iv_file:
+                Intent intent=new Intent(this,VideoFileActivity.class);
+                startActivity(intent);
                 break;
         }
-        if (mResult == ErrorCode.SUCCESS) {
-            uiThread = new UIThread();
-            new Thread(uiThread).start();
-            mState = mFlag;
-        } else {
-            Message msg = new Message();
-            Bundle b = new Bundle();// 存放数据
-            b.putInt("cmd", CMD_RECORDFAIL);
-            b.putInt("msg", mResult);
-            msg.setData(b);
-
-            uiHandler.sendMessage(msg); // 向Handler发送消息,更新UI
-        }
-    }
-
-    /**
-     * 停止录音
-     */
-    private void stop() {
-        if (mState != -1) {
-            switch (mState) {
-                case FLAG_WAV:
-                    AudioRecordFunc mRecord_1 = AudioRecordFunc.getInstance();
-                    mRecord_1.stopRecordAndFile();
-                    break;
-                case FLAG_AMR:
-                    MediaRecordFunc mRecord_2 = MediaRecordFunc.getInstance();
-                    mRecord_2.stopRecordAndFile();
-                    break;
-            }
-            if (uiThread != null) {
-                uiThread.stopThread();
-            }
-            if (uiHandler != null)
-                uiHandler.removeCallbacks(uiThread);
-            Message msg = new Message();
-            Bundle b = new Bundle();// 存放数据
-            b.putInt("cmd", CMD_STOP);
-            b.putInt("msg", mState);
-            msg.setData(b);
-            uiHandler.sendMessageDelayed(msg, 1000); // 向Handler发送消息,更新UI
-            mState = -1;
-        }
-    }
-
-    private final static int CMD_RECORDING_TIME = 2000;
-    private final static int CMD_RECORDFAIL = 2001;
-    private final static int CMD_STOP = 2002;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
 
-    class UIHandler extends Handler {
-        public UIHandler() {
-        }
+    public void startTimer() {
 
-        @Override
-        public void handleMessage(Message msg) {
-            // TODO Auto-generated method stub
-            Log.d("MyHandler", "handleMessage......");
-            super.handleMessage(msg);
-            Bundle b = msg.getData();
-            int vCmd = b.getInt("cmd");
-            switch (vCmd) {
-                case CMD_RECORDING_TIME:
-                    int vTime = b.getInt("msg", 0);
-                    MainActivity.this.mText.setText("正在录音中，已录制：" + vTime + " s");
-                    break;
-                case CMD_RECORDFAIL:
-                    int vErrorCode = b.getInt("msg");
-                    String vMsg = ErrorCode.getErrorInfo(MainActivity.this, vErrorCode);
-                    MainActivity.this.mText.setText("录音失败：" + vMsg);
-                    break;
-                case CMD_STOP:
-                    int vFileType = b.getInt("msg");
-                    switch (vFileType) {
-                        case FLAG_WAV:
-                            AudioRecordFunc mRecord_1 = AudioRecordFunc.getInstance();
-                            final long mSize = mRecord_1.getRecordFileSize();
-                            MainActivity.this.mText.setText("录音已停止.录音文件:" + AudioFileFunc.getWavFilePath() + "\n文件大小：" + mSize);
-
-                            break;
-                        case FLAG_AMR:
-                            MediaRecordFunc mRecord_2 = MediaRecordFunc.getInstance();
-                            final long mSizes = mRecord_2.getRecordFileSize();
-                            MainActivity.this.mText.setText("录音已停止.录音文件:" + AudioFileFunc.getAMRFilePath() + "\n文件大小：" + mSizes);
-
-                            break;
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mText.setText(FileUtils.getStringTime(cnt++));
                     }
-                    break;
-                default:
-                    break;
+                });
             }
+        };
+
+        if (timer == null) {
+            timer = new Timer();
         }
+        timer.schedule(timerTask, 0, 1000);
     }
 
-    class UIThread implements Runnable {
-        int mTimeMill = 0;
-        boolean vRun = true;
+    /**
+     * 位移动画
+     *
+     * @param view
+     */
+    public void rotateyAnimRun(View view) {
+        ObjectAnimator//
+                .ofFloat(view, "alpha", 0F, 1F)//
+                .setDuration(400)//
+                .start();
+        ObjectAnimator//
+                .ofFloat(view, "translationX", -360F, 0F)//
+                .setDuration(500)//
+                .start();
+//        ObjectAnimator//
+//                .ofFloat(view, "translationY", -360F, 0F)//
+//                .setDuration(500)//
+//                .start();
+    }
 
-        public void stopThread() {
-            vRun = false;
-        }
-
-        public void run() {
-            while (vRun) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                mTimeMill++;
-                Log.d("thread", "mThread........" + mTimeMill);
-                Message msg = new Message();
-                Bundle b = new Bundle();// 存放数据
-                b.putInt("cmd", CMD_RECORDING_TIME);
-                b.putInt("msg", mTimeMill);
-                msg.setData(b);
-                MainActivity.this.uiHandler.sendMessage(msg); // 向Handler发送消息,更新UI
-            }
-
-        }
+    /**
+     * 位移动画
+     *
+     * @param view
+     */
+    public void rotateyAnimSet(View view) {
+        ObjectAnimator//
+                .ofFloat(view, "alpha", 0F, 1F)//
+                .setDuration(400)//
+                .start();
+        ObjectAnimator//
+                .ofFloat(view, "translationX", 360F, 0F)//
+                .setDuration(500)//
+                .start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mCamerPresent.closeCamer();
+        mCamerPresent.stopRecording();
+    }
+
+    //双击退出
+    private long firstTime=0;
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                long secondTime=System.currentTimeMillis();
+                if(mState){
+                    Toast.makeText(MainActivity.this,"正在录制是否退出?",Toast.LENGTH_SHORT).show();
+                }
+                if(secondTime-firstTime>2000){
+                    Toast.makeText(MainActivity.this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
+                    firstTime=secondTime;
+                    return true;
+                }else{
+                    System.exit(0);
+                }
+                break;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

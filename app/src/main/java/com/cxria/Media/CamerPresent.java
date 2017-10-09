@@ -6,9 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
 import android.media.MediaPlayer;
-import android.util.Log;
-import android.view.Surface;
+import android.media.MediaRecorder;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.cxria.Media.utils.CameraSizeUtils;
 import com.cxria.Media.utils.FileUtils;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -32,11 +33,15 @@ public class CamerPresent implements CameraControler.presenr{
     SurfaceView mSurfaceview;
     private Camera mCamera;
     boolean isBackCamera=true;
-    int cameraPosition = 1;
     private SurfaceHolder mHolder;
     private Camera.Parameters mParams;
     private List<Camera.Size> mPreviewSizes;
     private float mRatio;
+    private MediaRecorder mediaRecorder;
+    private File tempFile;
+    private final int maxDurationInMs = 20000;
+    private final long maxFileSizeInBytes = 500000;
+    private final int videoFramesPerSecond = 20;
 
     public CamerPresent(CameraControler.view view) {
         mView = view;
@@ -58,13 +63,14 @@ public class CamerPresent implements CameraControler.presenr{
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-//                closeCamer();
+
             }
         });
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         //保持屏幕的高亮
         mSurfaceview.setKeepScreenOn(true);
     }
+
     @Override
     public void openCamer(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(WINDOW_SERVICE);
@@ -78,6 +84,10 @@ public class CamerPresent implements CameraControler.presenr{
     }
 
     private void cameraInit() {
+        if(mCamera==null){
+            Toast.makeText((Context) mView, "请在设置界面给予照相机权限", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mParams = mCamera.getParameters();
         //前置的话，设置焦点要报错
         if(isBackCamera){
@@ -140,6 +150,80 @@ public class CamerPresent implements CameraControler.presenr{
         }
     }
 
+    public boolean startRecording(int recordQuality){
+        int quality=CamcorderProfile.QUALITY_480P;
+        switch (recordQuality){
+            case 0:
+                quality=CamcorderProfile.QUALITY_1080P;
+                break;
+            case 1:
+                quality=CamcorderProfile.QUALITY_720P;
+                break;
+            case 2:
+                quality=CamcorderProfile.QUALITY_480P;
+                break;
+            case 3:
+                quality=CamcorderProfile.QUALITY_CIF;
+                break;
+            case 4:
+                quality=CamcorderProfile.QUALITY_HIGH;
+                break;
+        }
+        try {
+            mCamera.unlock();
+
+            mediaRecorder = new MediaRecorder();
+
+            mediaRecorder.setCamera(mCamera);
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+
+            mediaRecorder.setMaxDuration(maxDurationInMs);
+            tempFile = new File(FileUtils.PHOTO_PATH,FileUtils.getVideoFileName());
+            mediaRecorder.setOutputFile(tempFile.getPath());
+
+//            mediaRecorder.setVideoFrameRate(30); // 视频帧频率
+//            mediaRecorder.setVideoFrameRate(videoFramesPerSecond);
+
+//            mediaRecorder.setVideoSize(mSurfaceview.getWidth(), mSurfaceview.getHeight());
+//            mediaRecorder.setVideoSize(ScreenUtils.instance().getWidth((Context) mView), ScreenUtils.instance().getHeight((Context) mView));
+
+//            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+//            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+//            mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+
+            mediaRecorder.setProfile(CamcorderProfile.get(quality));
+
+            mediaRecorder.setPreviewDisplay(mSurfaceview.getHolder().getSurface());
+
+//            mediaRecorder.setMaxFileSize(maxFileSizeInBytes);
+
+            mediaRecorder.prepare();
+
+            mediaRecorder.start();
+
+            return true;
+        } catch (IllegalStateException e) {
+//            Log.e(TAG,e.getMessage());
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+//            Log.e(TAG,e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean stopRecording() {
+        if(mediaRecorder!=null){
+            mediaRecorder.stop();
+            mCamera.lock();
+            return true;
+        }
+        return false;
+    }
+
     public void getSupportedWhiteBalance(){
         List<String> whiteBalance = mParams.getSupportedWhiteBalance();
 //        Log.i("----whiteBalance",whiteBalance.toString()+"");
@@ -185,14 +269,14 @@ public class CamerPresent implements CameraControler.presenr{
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                if(voiceLable==0){
+                if(voiceLable==2){
 
-                }else if(voiceLable==1){
-                    MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_voice);
+                }else if(voiceLable==0){
+                    MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_1);
                     mediaPlayer.start();
-                }else if(voiceLable==2){
-//                    MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_voice);
-//                    mediaPlayer.start();
+                }else if(voiceLable==1){
+                    MediaPlayer mediaPlayer=MediaPlayer.create((Context) mView, R.raw.camera_2);
+                    mediaPlayer.start();
                 }
 
                 Toast.makeText((Context) mView, "拍照中...", Toast.LENGTH_SHORT).show();

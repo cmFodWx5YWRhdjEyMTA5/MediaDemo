@@ -22,6 +22,29 @@
         <LinearLayout android:layout_width="match_parent"
                       android:orientation="vertical"
                       android:layout_height="match_parent">
+            <RelativeLayout android:layout_width="match_parent"
+                            android:layout_height="50dp">
+                <TextView android:layout_width="58dp"
+                          android:text="录制分辨率："
+                          android:id="@+id/tv_video"
+                          android:textColor="@color/white"
+                          android:layout_marginLeft="20dp"
+                          android:gravity="center"
+                          android:layout_height="match_parent"/>
+                <Spinner android:layout_width="match_parent"
+                         android:id="@+id/sp_record"
+                         android:theme="@style/SpinnerStyle"
+                         android:layout_marginLeft="0dp"
+                         android:entries="@array/spinners"
+                         android:layout_toRightOf="@+id/tv_video"
+                         android:dropDownWidth="90dp"
+                         android:gravity="center"
+                         android:spinnerMode="dropdown"
+                         android:overlapAnchor="false"
+                         android:layout_height="match_parent">
+                </Spinner>
+
+            </RelativeLayout>
             <LinearLayout android:layout_width="match_parent"
                           android:orientation="horizontal"
                           android:layout_height="50dp">

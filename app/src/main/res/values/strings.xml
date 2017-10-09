@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MediaDemo</string>
+    <string name="app_name">Media</string>
     <string name="hello_world">测试AudioRecord，实现录音功能</string>
     <string name="menu_settings">Settings</string>
     <string name="view_record_wav">录音WAV文件</string>

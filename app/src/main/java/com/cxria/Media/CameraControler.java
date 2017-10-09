@@ -18,6 +18,8 @@ public interface CameraControler {
         void openBline();
         void getPhoto();
         void setVoiceDev(int dev);
+        boolean startRecording(int recordQuality);
+        boolean stopRecording();
     }
 
     interface view{
