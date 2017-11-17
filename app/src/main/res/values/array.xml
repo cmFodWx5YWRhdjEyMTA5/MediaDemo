@@ -7,4 +7,10 @@
         <item>352x288</item>
         <item>手机最高</item>
     </string-array>
+    <string-array name="title">
+        <item>推荐</item>
+        <item>笑话</item>
+        <item>图片</item>
+        <item>搞怪</item>
+    </string-array>
 </resources>

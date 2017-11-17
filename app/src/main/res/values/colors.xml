@@ -11,8 +11,11 @@
     <color name="white">#fff</color>
     <color name="color_595959">#3e3e3e</color>
     <color name="color_5a383737">#5a8f8f8f</color>
+    <color name="color_black">#000</color>
 <!--play-->
     <color name="color_write">#fff</color>
     <color name="color_2b2b2b">#2b2b2b</color>
+    <color name="color_9b2f4de6">#9b2f4de6</color>
+    <color name="color_94abaaaa">#94abaaaa</color>
 
 </resources>

@@ -8,7 +8,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <RelativeLayout android:layout_width="wrap_content"
+        <RelativeLayout android:layout_width="match_parent"
                         android:id="@+id/rl_contain"
                         app:layout_scrollFlags="scroll|enterAlways"
                         android:layout_height="50dp">
@@ -20,24 +20,32 @@
                        android:layout_marginLeft="5dp"
                        android:layout_centerVertical="true"
                        android:layout_height="wrap_content"/>
+            <TextView android:layout_width="wrap_content"
+                      android:gravity="center"
+                      android:text="娱乐合集"
+                      android:textSize="18sp"
+                      android:layout_centerHorizontal="true"
+                      android:layout_height="match_parent"/>
         </RelativeLayout>
+        <View android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:background="@color/color_9b2f4de6"/>
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
-            android:layout_width="wrap_content"
+            android:background="@color/color_write"
+            app:tabGravity="fill"
+            app:tabTextColor="@color/color_2b2b2b"
+            app:tabSelectedTextColor="@color/bg_blue"
+            app:tabIndicatorColor="@color/bg_blue"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/sr_refresh"
-        android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+   <android.support.v4.view.ViewPager
+       android:layout_width="match_parent"
+       app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager">
+   </android.support.v4.view.ViewPager>
 
 </android.support.design.widget.CoordinatorLayout>
