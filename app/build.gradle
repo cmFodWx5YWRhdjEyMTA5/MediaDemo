@@ -32,7 +32,10 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'cn.jzvd:jiaozivideoplayer:6.0.2'
+    compile 'com.lyf:yflibrary:1.0.2'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile'com.lyf:yflibrary:1.0.2'
+    compile'com.android.support:design:25.3.1'
+    compile "com.android.support:design:25.3.1"
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }

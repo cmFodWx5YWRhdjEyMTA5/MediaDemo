@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:background="@mipmap/bg_header_nav"
+                    android:layout_height="180dp">
+        <ImageView android:layout_width="25dp"
+                   android:src="@mipmap/ic_logout"
+                   android:id="@+id/iv_close"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginRight="10dp"
+                   android:layout_alignParentRight="true"
+                   android:layout_height="25dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@mipmap/tool_icon"
+            android:layout_width="60dp"
+            android:id="@+id/head"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/shouye_lv_tv"
+            android:layout_height="60dp"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_below="@id/head"
+                  android:layout_marginLeft="20dp"
+                  android:textSize="16sp"
+                  android:visibility="gone"
+                  android:layout_marginRight="20dp"
+                  android:text="好好扮演自己的角色，走好人生的每一次彩排，Go for it!"
+                  android:textColor="@color/white"
+                  android:layout_marginTop="25dp"
+                  android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="40dp">
+        <TextView android:layout_width="match_parent"
+                  android:textSize="18sp"
+                  android:text="关于我们"
+                  android:textColor="@color/color_2b2b2b"
+                  android:layout_centerVertical="true"
+                  android:layout_height="wrap_content"/>
+    </RelativeLayout>
+</LinearLayout>

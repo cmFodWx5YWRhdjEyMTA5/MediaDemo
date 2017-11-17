@@ -1,4 +1,4 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
 import android.content.Context;
 import android.view.SurfaceView;

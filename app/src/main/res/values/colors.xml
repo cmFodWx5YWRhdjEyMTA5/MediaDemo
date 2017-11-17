@@ -10,6 +10,9 @@
     <color name="color_94ffffff">#7affffff</color>
     <color name="white">#fff</color>
     <color name="color_595959">#3e3e3e</color>
-
+    <color name="color_5a383737">#5a8f8f8f</color>
+<!--play-->
+    <color name="color_write">#fff</color>
+    <color name="color_2b2b2b">#2b2b2b</color>
 
 </resources>

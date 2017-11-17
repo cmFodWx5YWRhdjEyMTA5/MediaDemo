@@ -4,7 +4,6 @@ package com.cxria.Media;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -29,13 +28,13 @@ public class LoadingActivity extends BaseActivity {
     TextView mTvRemind;
 
     @Override
-    int getLayout() {
+    public int getLayout() {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         return R.layout.activity_loading;
     }
 
     @Override
-    void initView() {
+    public void initView() {
         List<Integer> mImages = new ArrayList<>();
         mImages.add(R.drawable.bg_1);
         mImages.add(R.drawable.bg_2);
@@ -108,7 +107,7 @@ public class LoadingActivity extends BaseActivity {
             public void run() {
                 try {
                     Thread.sleep(2000);
-                    Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoadingActivity.this, ChooseActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (InterruptedException e) {

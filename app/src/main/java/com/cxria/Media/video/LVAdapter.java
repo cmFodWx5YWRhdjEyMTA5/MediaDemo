@@ -1,4 +1,4 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cxria.Media.R;
 
 import java.io.File;
 import java.text.DecimalFormat;

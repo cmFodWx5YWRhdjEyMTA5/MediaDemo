@@ -1,6 +1,5 @@
 package com.cxria.Media;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.cxria.Media.video.MainActivity;
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -13,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cxria.Media.BaseActivity;
+import com.cxria.Media.R;
 import com.cxria.Media.utils.FileUtils;
 
 import java.io.File;
@@ -38,12 +39,12 @@ public class VideoFileActivity extends BaseActivity {
     private LVAdapter mLvAdapter;
 
     @Override
-    int getLayout() {
+    public int getLayout() {
         return R.layout.activity_video_file;
     }
 
     @Override
-    void initView() {
+    public void initView() {
         fileName = FileUtils.getFileName();
         Collections.reverse(fileName);
         if (fileName.size() > 0) {

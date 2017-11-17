@@ -1,12 +1,12 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
-import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.cxria.Media.BaseActivity;
+import com.cxria.Media.R;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.senab.photoview.PhotoView;
 
@@ -18,12 +18,12 @@ public class PhotoViewActivity extends BaseActivity {
     PhotoView mPhotoview;
 
     @Override
-    int getLayout() {
+    public int getLayout() {
         return R.layout.activity_photo_view;
     }
 
     @Override
-    void initView() {
+    public void initView() {
         String imagepath = getIntent().getStringExtra("imagepath");
         Glide.with(this).load(imagepath).into(mPhotoview);
     }

@@ -1,9 +1,8 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.view.KeyEvent;
@@ -26,6 +25,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cxria.Media.BaseActivity;
+import com.cxria.Media.CenterDialog;
+import com.cxria.Media.R;
+import com.cxria.Media.ViewUtils;
 import com.cxria.Media.utils.FileUtils;
 import com.cxria.Media.utils.ScreenUtils;
 import com.cxria.Media.utils.TagLayout;
@@ -36,7 +39,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements CameraControler.view {
@@ -142,7 +144,7 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
     private WindowManager.LayoutParams mLp;
 
     @Override
-    int getLayout() {
+    public int getLayout() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -150,7 +152,7 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
     }
 
     @Override
-    void initView() {
+    public void initView() {
         mCamerPresent = new CamerPresent(this);
         mCamerPresent.init(mSurfaceview);
         setListener();

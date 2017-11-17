@@ -1,4 +1,4 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,8 +14,10 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.cxria.Media.R;
 import com.cxria.Media.utils.CameraSizeUtils;
 import com.cxria.Media.utils.FileUtils;
+import com.cxria.Media.video.CameraControler;
 
 import java.io.File;
 import java.io.FileOutputStream;

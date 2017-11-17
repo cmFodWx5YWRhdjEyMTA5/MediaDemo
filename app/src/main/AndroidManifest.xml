@@ -49,8 +49,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoadingActivity">
+        <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -59,18 +58,23 @@
         </activity>
         <activity android:name=".BaseActivity">
         </activity>
-        <activity android:name=".VideoFileActivity">
+        <activity android:name=".video.VideoFileActivity">
         </activity>
-        <activity android:name=".PhotoViewActivity">
+        <activity android:name=".video.PhotoViewActivity">
         </activity>
         <activity
-            android:name=".VideoPlayActivity"
+            android:name=".video.VideoPlayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"> <!-- or android:screenOrientation="landscape" -->
             >
         </activity>
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="landscape">
+        <activity
+            android:name=".video.MainActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".ChooseActivity">
+        </activity>
+        <activity android:name=".play.PlayActivity">
         </activity>
     </application>
 

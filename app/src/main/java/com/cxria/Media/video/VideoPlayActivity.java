@@ -1,11 +1,11 @@
-package com.cxria.Media;
+package com.cxria.Media.video;
 
-import android.os.Bundle;
-import android.view.Window;
 import android.view.WindowManager;
 
+import com.cxria.Media.R;
+import com.cxria.Media.BaseActivity;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.jzvd.JZVideoPlayerStandard;
 
 public class VideoPlayActivity extends BaseActivity {
@@ -14,13 +14,13 @@ public class VideoPlayActivity extends BaseActivity {
     JZVideoPlayerStandard mVideoplayer;
 
     @Override
-    int getLayout() {
+    public int getLayout() {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         return R.layout.activity_video_play;
     }
 
     @Override
-    void initView() {
+    public void initView() {
         String imagepath = getIntent().getStringExtra("imagepath");
         String[] split = imagepath.split("/");
         mVideoplayer.setUp(imagepath
