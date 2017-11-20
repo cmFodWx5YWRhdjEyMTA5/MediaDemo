@@ -1,6 +1,5 @@
 package com.cxria.Media.play;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,13 +12,15 @@ import android.widget.TextView;
 
 import com.cxria.Media.BaseActivity;
 import com.cxria.Media.R;
+import com.cxria.Media.fragment.ImageFragment;
+import com.cxria.Media.fragment.JokeFragment;
 import com.cxria.Media.fragment.RecFragment;
+import com.cxria.Media.fragment.TextFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -74,11 +75,13 @@ public class PlayActivity extends BaseActivity {
             mTablayout.addTab(mTablayout.newTab().setText(mStringArray[i]));
         }
         RecFragment instance = RecFragment.getInstance();
-        RecFragment instance2 = RecFragment.getInstance();
-        RecFragment instance3 = RecFragment.getInstance();
-        RecFragment instance4 = RecFragment.getInstance();
+        RecFragment instance1 = RecFragment.getInstance();
+        ImageFragment instance2 = ImageFragment.getInstance();
+        JokeFragment instance3 = JokeFragment.getInstance();
+        TextFragment instance4 = TextFragment.getInstance();
 
         mFragments.add(instance);
+        mFragments.add(instance1);
         mFragments.add(instance2);
         mFragments.add(instance3);
         mFragments.add(instance4);

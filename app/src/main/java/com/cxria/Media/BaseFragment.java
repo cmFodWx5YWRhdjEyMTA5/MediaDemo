@@ -18,12 +18,12 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(getLayout(),null);
-        ButterKnife.bind(inflate);
-        initView();
+        ButterKnife.bind(this, inflate);
+        initView(inflate, savedInstanceState);
         return inflate;
     }
 
     public abstract int getLayout() ;
 
-    public abstract void initView();
+    public abstract void initView(View inflate,Bundle savedInstanceState);
 }

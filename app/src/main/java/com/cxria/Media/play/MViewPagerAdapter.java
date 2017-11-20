@@ -26,7 +26,7 @@ public class MViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return mTitleList.length;
     }
     @Override
     public CharSequence getPageTitle(int position) {

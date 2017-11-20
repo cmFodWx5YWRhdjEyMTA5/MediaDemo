@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,10 @@ import android.widget.Toast;
 
 import com.cxria.Media.BaseFragment;
 import com.cxria.Media.R;
-import com.cxria.Media.adapter.JokeAdapter;
+import com.cxria.Media.adapter.ImageAdapter;
 import com.cxria.Media.adapter.RecAdapter;
-import com.cxria.Media.entity.JokeInfo;
 import com.cxria.Media.entity.RecInfo;
 import com.cxria.Media.netutils.NetworkUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
@@ -36,19 +32,19 @@ import okhttp3.Call;
  * Created by yukun on 17-11-17.
  */
 
-public class RecFragment extends BaseFragment {
-    String url = "http://lf.snssdk.com/neihan/stream/mix/v1/?content_type=-104";
+public class ImageFragment extends BaseFragment {
+    String url = "http://lf.snssdk.com/neihan/stream/mix/v1/?content_type=-103";
     int page = 1;
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
     List<RecInfo> jokeInfoList=new ArrayList<>();
-    private RecAdapter mJokeAdapter;
+    private ImageAdapter mJokeAdapter;
     private LinearLayoutManager mLayoutManager;
 
-    public static RecFragment getInstance() {
-        RecFragment recFragment = new RecFragment();
+    public static ImageFragment getInstance() {
+        ImageFragment recFragment = new ImageFragment();
         return recFragment;
     }
 
@@ -61,7 +57,7 @@ public class RecFragment extends BaseFragment {
     public void initView(View inflate, Bundle savedInstanceState) {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRvJoke.setLayoutManager(mLayoutManager);
-        mJokeAdapter = new RecAdapter(getContext(),jokeInfoList);
+        mJokeAdapter = new ImageAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
@@ -116,18 +112,28 @@ public class RecFragment extends BaseFragment {
                         JSONObject jsonObject1 = data.optJSONObject(i);
                         JSONObject group = jsonObject1.optJSONObject("group");
                         recInfo.setText(group.optString("text"));
-                        recInfo.setPlay_url(group.optString("mp4_url"));
                         recInfo.setShare_url(group.optString("share_url"));
                         recInfo.setCreate_time(group.optString("create_time"));
-                        recInfo.setPlay_time(group.optLong("play_count"));
+                        recInfo.setPlay_time(group.optLong("comment_count"));
 
                         JSONObject user = group.optJSONObject("user");
                         recInfo.setUser_name(user.optString("name"));
                         recInfo.setHeader(user.optString("avatar_url"));
+                        JSONObject covers = group.optJSONObject("large_image");
+                        JSONObject mp4 = group.optJSONObject("mp4_url");
+                        JSONObject gifvideo = group.optJSONObject("gifvideo");
 
-                        JSONObject covers = group.optJSONObject("large_cover");
-                        JSONArray cover_url = covers.optJSONArray("url_list");
-                        recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
+                        if(gifvideo==null){
+                            JSONArray cover_url = covers.optJSONArray("url_list");
+                            recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
+                            recInfo.setPlay_url(cover_url.optJSONObject(0).optString("url"));
+                            recInfo.setGif(false);
+                        }else {
+                            JSONArray cover_url = gifvideo.optJSONArray("url_list");
+                            recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
+                            recInfo.setPlay_url(cover_url.optJSONObject(0).optString("url"));
+                            recInfo.setGif(true);
+                        }
                         jokeInfoList.add(recInfo);
                     }
                     mJokeAdapter.notifyDataSetChanged();

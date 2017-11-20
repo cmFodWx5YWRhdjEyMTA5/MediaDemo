@@ -57,7 +57,7 @@ public class VideoFileActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (fileName.get(position).endsWith(".mp4")) {
                     Intent intent = new Intent(VideoFileActivity.this, VideoPlayActivity.class);
-                    intent.putExtra("imagepath", fileName.get(position));
+                    intent.putExtra("imagepath", fileName.get(position)+"#本地文件");
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(VideoFileActivity.this, PhotoViewActivity.class);

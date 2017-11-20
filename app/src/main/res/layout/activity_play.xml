@@ -18,5 +18,4 @@
                   android:layout_height="match_parent">
         <include layout="@layout/draw_left_layout"/>
     </LinearLayout>
-
 </android.support.v4.widget.DrawerLayout>

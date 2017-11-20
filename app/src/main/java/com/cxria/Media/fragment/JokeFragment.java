@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import android.widget.Toast;
 import com.cxria.Media.BaseFragment;
 import com.cxria.Media.R;
 import com.cxria.Media.adapter.JokeAdapter;
-import com.cxria.Media.adapter.RecAdapter;
 import com.cxria.Media.entity.JokeInfo;
-import com.cxria.Media.entity.RecInfo;
 import com.cxria.Media.netutils.NetworkUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,19 +33,20 @@ import okhttp3.Call;
  * Created by yukun on 17-11-17.
  */
 
-public class RecFragment extends BaseFragment {
-    String url = "http://lf.snssdk.com/neihan/stream/mix/v1/?content_type=-104";
+public class JokeFragment extends BaseFragment {
+    String url = "http://api.avatardata.cn/Joke/QueryJokeByTime";
     int page = 1;
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-    List<RecInfo> jokeInfoList=new ArrayList<>();
-    private RecAdapter mJokeAdapter;
+    List<JokeInfo> jokeInfoList=new ArrayList<>();
+    private JokeAdapter mJokeAdapter;
+    private long mTime;
     private LinearLayoutManager mLayoutManager;
 
-    public static RecFragment getInstance() {
-        RecFragment recFragment = new RecFragment();
+    public static JokeFragment getInstance() {
+        JokeFragment recFragment = new JokeFragment();
         return recFragment;
     }
 
@@ -59,9 +57,10 @@ public class RecFragment extends BaseFragment {
 
     @Override
     public void initView(View inflate, Bundle savedInstanceState) {
+        mTime = System.currentTimeMillis() / 1000;
         mLayoutManager = new LinearLayoutManager(getContext());
         mRvJoke.setLayoutManager(mLayoutManager);
-        mJokeAdapter = new RecAdapter(getContext(),jokeInfoList);
+        mJokeAdapter = new JokeAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
@@ -99,6 +98,10 @@ public class RecFragment extends BaseFragment {
 
     private void getInfo() {
         NetworkUtils.networkGet(url)
+                .addParams("key", NetworkUtils.APPKEY)
+                .addParams("time", mTime + "")
+                .addParams("sort", "desc")
+                .addParams("page", page + "")
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -109,42 +112,21 @@ public class RecFragment extends BaseFragment {
             public void onResponse(String response, int id) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject dataArr = jsonObject.optJSONObject("data");
-                    JSONArray data = dataArr.optJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        RecInfo recInfo=new RecInfo();
-                        JSONObject jsonObject1 = data.optJSONObject(i);
-                        JSONObject group = jsonObject1.optJSONObject("group");
-                        recInfo.setText(group.optString("text"));
-                        recInfo.setPlay_url(group.optString("mp4_url"));
-                        recInfo.setShare_url(group.optString("share_url"));
-                        recInfo.setCreate_time(group.optString("create_time"));
-                        recInfo.setPlay_time(group.optLong("play_count"));
-
-                        JSONObject user = group.optJSONObject("user");
-                        recInfo.setUser_name(user.optString("name"));
-                        recInfo.setHeader(user.optString("avatar_url"));
-
-                        JSONObject covers = group.optJSONObject("large_cover");
-                        JSONArray cover_url = covers.optJSONArray("url_list");
-                        recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
-                        jokeInfoList.add(recInfo);
+                    JSONArray data = jsonObject.optJSONArray("result");
+                    if(data!=null){
+                        Gson gson = new Gson();
+                        List<JokeInfo> jokeList = gson.fromJson(data.toString(), new TypeToken<List<JokeInfo>>() {
+                        }.getType());
+                        jokeInfoList.addAll(jokeList);
+                        mJokeAdapter.notifyDataSetChanged();
                     }
-                    mJokeAdapter.notifyDataSetChanged();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
         });
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 }

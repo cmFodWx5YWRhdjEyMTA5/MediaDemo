@@ -9,8 +9,9 @@
     </string-array>
     <string-array name="title">
         <item>推荐</item>
-        <item>笑话</item>
+        <item>视频</item>
         <item>图片</item>
-        <item>搞怪</item>
+        <item>搞笑</item>
+        <item>美文</item>
     </string-array>
 </resources>
