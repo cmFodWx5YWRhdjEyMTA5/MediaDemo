@@ -1,14 +1,22 @@
 package com.cxria.Media.play;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cxria.Media.BaseActivity;
 import com.cxria.Media.R;
@@ -16,6 +24,7 @@ import com.cxria.Media.fragment.ImageFragment;
 import com.cxria.Media.fragment.JokeFragment;
 import com.cxria.Media.fragment.RecFragment;
 import com.cxria.Media.fragment.TextFragment;
+import com.cxria.Media.video.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +71,7 @@ public class PlayActivity extends BaseActivity {
     TextView mTvClose;
     private MViewPagerAdapter mMViewPagerAdapter;
     private String[] mStringArray;
+    private boolean isNight;
 
     @Override
     public int getLayout() {
@@ -92,6 +102,7 @@ public class PlayActivity extends BaseActivity {
     private void setAdapter() {
         mMViewPagerAdapter = new MViewPagerAdapter(getSupportFragmentManager(), mFragments, mStringArray);
         mViewpager.setAdapter(mMViewPagerAdapter);
+        mViewpager.setOffscreenPageLimit(5);
     }
 
     private void setListener() {
@@ -147,15 +158,22 @@ public class PlayActivity extends BaseActivity {
                 closeDrawLayout();
                 break;
             case R.id.rl_movie:
+                Intent intentHis=new Intent(this,HistoryTodayActivity.class);
+                startActivity(intentHis);
                 closeDrawLayout();
                 break;
             case R.id.rl_change_modul:
+                setNightMode();
                 closeDrawLayout();
                 break;
             case R.id.rl_collect:
+                Intent intentCol=new Intent(this,MyCollectActivity.class);
+                startActivity(intentCol);
                 closeDrawLayout();
                 break;
             case R.id.rl_me:
+                Intent intentAbu=new Intent(this,AboutUsActivity.class);
+                startActivity(intentAbu);
                 closeDrawLayout();
                 break;
             case R.id.tv_close:
@@ -165,7 +183,52 @@ public class PlayActivity extends BaseActivity {
         }
     }
 
+    private void setNightMode() {
+        //  获取当前模式
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        //  将是否为夜间模式保存到SharedPreferences
+        if(currentNightMode==32){
+            isNight=true;
+        }else {
+            isNight=false;
+        }
+
+        getDelegate().setDefaultNightMode(isNight ?
+                AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
+        //  重启Activity
+        recreate();
+        saveModule(isNight);
+    }
+
+    private void saveModule(boolean isNight) {
+        SharedPreferences sharedPreferences = getSharedPreferences("module", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putBoolean("isNight", isNight);
+        editor.commit();//提交修改
+    }
+
+
     private void closeDrawLayout() {
         mDrawlayout.closeDrawer(Gravity.LEFT);
+    }
+    //双击退出
+    private long firstTime=0;
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                long secondTime=System.currentTimeMillis();
+
+                if(secondTime-firstTime>2000){
+                    Toast.makeText(PlayActivity.this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
+                    firstTime=secondTime;
+                    return true;
+                }else{
+                   finish();
+                }
+                break;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

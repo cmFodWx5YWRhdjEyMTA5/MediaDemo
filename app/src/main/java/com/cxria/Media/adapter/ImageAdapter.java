@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cxria.Media.R;
+import com.cxria.Media.entity.CollectInfo;
 import com.cxria.Media.entity.RecInfo;
 import com.cxria.Media.play.ImageDetailActivity;
 import com.cxria.Media.video.VideoPlayActivity;
+
+import org.litepal.crud.DataSupport;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -45,7 +49,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MHolder) {
             final RecInfo recInfo = jokeInfoList.get(position);
             ((MHolder) holder).mTvName.setText(recInfo.getUser_name());
@@ -71,6 +75,32 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     shareSend(context,recInfo.getShare_url());
+                }
+            });
+
+            //加入收藏
+            ((MHolder) holder).mImCollect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    List<CollectInfo> newsList = DataSupport.where("cover = ?", recInfo.getCover()).find(CollectInfo.class);
+                    if(newsList.size()>0){
+                        Toast.makeText(context, "已经添加到收藏了-_-", Toast.LENGTH_SHORT).show();
+                        //存储了
+                        return;
+                    }else {
+                        CollectInfo collectInfo=new CollectInfo();
+                        collectInfo.setHeader(recInfo.getHeader());
+                        collectInfo.setCover(recInfo.getCover());
+                        collectInfo.setTitle(recInfo.getText());
+                        collectInfo.setName(recInfo.getUser_name());
+                        collectInfo.setType(2);
+                        collectInfo.setPlay_url(recInfo.getCover());
+                        collectInfo.setGif(recInfo.isGif());
+                        collectInfo.save();
+                        Toast.makeText(context, "添加到收藏成功", Toast.LENGTH_SHORT).show();
+                        ((MHolder) holder).mImCollect.setImageResource(R.mipmap.collection_fill);
+                    }
                 }
             });
         }
@@ -105,6 +135,8 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView mTvPlayTimes;
         @BindView(R.id.iv_share)
         ImageView mImShare;
+        @BindView(R.id.iv_collect)
+        ImageView mImCollect;
 
         public MHolder(View itemView) {
             super(itemView);

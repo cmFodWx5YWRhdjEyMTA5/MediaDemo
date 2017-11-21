@@ -120,18 +120,14 @@ public class ImageFragment extends BaseFragment {
                         recInfo.setUser_name(user.optString("name"));
                         recInfo.setHeader(user.optString("avatar_url"));
                         JSONObject covers = group.optJSONObject("large_image");
-                        JSONObject mp4 = group.optJSONObject("mp4_url");
                         JSONObject gifvideo = group.optJSONObject("gifvideo");
-
-                        if(gifvideo==null){
-                            JSONArray cover_url = covers.optJSONArray("url_list");
-                            recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
-                            recInfo.setPlay_url(cover_url.optJSONObject(0).optString("url"));
+                        JSONArray cover_url = covers.optJSONArray("url_list");
+                        recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
+                        int media_type = group.optInt("media_type");
+                        //判断GIF
+                        if(media_type==1){
                             recInfo.setGif(false);
                         }else {
-                            JSONArray cover_url = gifvideo.optJSONArray("url_list");
-                            recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
-                            recInfo.setPlay_url(cover_url.optJSONObject(0).optString("url"));
                             recInfo.setGif(true);
                         }
                         jokeInfoList.add(recInfo);

@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cxria.Media.R;
 import com.cxria.Media.entity.JokeInfo;
 import com.cxria.Media.play.JokeDetailActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,11 +29,25 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class JokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<JokeInfo> jokeInfoList;
+    List<Integer> mListHead=new ArrayList<>();
+    List<String> mListName=new ArrayList<>();
+
+    private Random mRandom=new Random();
 
 
     public JokeAdapter(Context context, List<JokeInfo> jokeInfoList) {
         this.context = context;
         this.jokeInfoList = jokeInfoList;
+        mListHead.add(R.drawable.head_1);
+        mListHead.add(R.drawable.head_2);
+        mListHead.add(R.drawable.head_3);
+        mListHead.add(R.drawable.head_4);
+        mListHead.add(R.drawable.head_5);
+        mListHead.add(R.drawable.head_6);
+        mListHead.add(R.drawable.head_7);
+        mListHead.add(R.drawable.head_8);
+        mListHead.add(R.drawable.head_9);
+        mListName= Arrays.asList(context.getResources().getStringArray(R.array.name));
     }
 
     @Override
@@ -43,7 +61,9 @@ public class JokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(holder instanceof MHolder){
             ((MHolder) holder).mTvJoke.setText(jokeInfoList.get(position).getContent());
             ((MHolder) holder).mTvTime.setText(jokeInfoList.get(position).getUpdatetime());
-            ((MHolder) holder).mTvName.setText("小明");
+            int headPos=mRandom.nextInt(9);
+            Glide.with(context).load(mListHead.get(headPos)).into(((MHolder) holder).mCiHead);
+            ((MHolder) holder).mTvName.setText(mListName.get(headPos));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

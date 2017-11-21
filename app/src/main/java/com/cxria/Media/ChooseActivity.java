@@ -1,7 +1,11 @@
 package com.cxria.Media;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +52,24 @@ public class ChooseActivity extends BaseActivity {
         int ran = random.nextInt(8);
         mIvBack.setBackgroundResource(mImages.get(ran));
         startAmim();
+
+        setNightMode();
+
+    }
+
+    private void setNightMode() {
+        //  获取当前模式
+        boolean module = getModule();
+        if(module){
+            getDelegate().setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//            recreate();
+        }
+    }
+
+    private boolean getModule() {
+        SharedPreferences share=getSharedPreferences("module", Context.MODE_PRIVATE);
+        boolean isNight=share.getBoolean("isNight",false);
+        return isNight;
     }
 
     private void startAmim() {

@@ -11,4 +11,5 @@ public class MyApplication extends LitePalApplication{
     public void onCreate() {
         super.onCreate();
     }
+
 }

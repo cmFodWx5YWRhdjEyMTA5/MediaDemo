@@ -554,27 +554,4 @@ public class MainActivity extends BaseActivity implements CameraControler.view {
         mCamerPresent.closeCamer();
         mCamerPresent.stopRecording();
     }
-
-    //双击退出
-    private long firstTime=0;
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case KeyEvent.KEYCODE_BACK:
-                long secondTime=System.currentTimeMillis();
-                if(mState){
-                    Toast.makeText(MainActivity.this,"正在录制是否退出?",Toast.LENGTH_SHORT).show();
-                }
-                if(secondTime-firstTime>2000){
-                    Toast.makeText(MainActivity.this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
-                    firstTime=secondTime;
-                    return true;
-                }else{
-                    System.exit(0);
-                }
-                break;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }

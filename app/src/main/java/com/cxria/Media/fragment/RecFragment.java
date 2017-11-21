@@ -116,7 +116,13 @@ public class RecFragment extends BaseFragment {
                         JSONObject jsonObject1 = data.optJSONObject(i);
                         JSONObject group = jsonObject1.optJSONObject("group");
                         recInfo.setText(group.optString("text"));
-                        recInfo.setPlay_url(group.optString("mp4_url"));
+
+                        JSONObject origin_video = group.optJSONObject("origin_video");
+                        JSONArray origin_video_arr = origin_video.optJSONArray("url_list");
+
+                        recInfo.setPlay_url(origin_video_arr.optJSONObject(0).optString("url"));
+
+//                        recInfo.setPlay_url(group.optString("mp4_url"));
                         recInfo.setShare_url(group.optString("share_url"));
                         recInfo.setCreate_time(group.optString("create_time"));
                         recInfo.setPlay_time(group.optLong("play_count"));

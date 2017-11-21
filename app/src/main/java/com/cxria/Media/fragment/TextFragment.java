@@ -37,8 +37,8 @@ import okhttp3.Call;
  */
 
 public class TextFragment extends BaseFragment {
-    String url = "http://api.avatardata.cn/QiWenNews/Query";
-    int page = 1;
+    String url = "http://v3.wufazhuce.com:8000/api/onelist/idlist/?channel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android 或 http://v3.wufazhuce.com:8000/api/onelist/idlist/?channel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
+    int page = 0;
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
@@ -48,6 +48,8 @@ public class TextFragment extends BaseFragment {
     private long mTime;
     private LinearLayoutManager mLayoutManager;
     private static String APPKEY="29d35d2d909845fd91dd71d12a460723";
+    private int total;
+    private JSONArray mData;
 
     public static TextFragment getInstance() {
         TextFragment recFragment = new TextFragment();
@@ -75,9 +77,8 @@ public class TextFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 jokeInfoList.clear();
-                mTextAdapter.notifyDataSetChanged();
-                page=1;
-                getInfo();
+                page=0;
+                getOneDayInfo();
                 mSw.setRefreshing(false);
             }
         });
@@ -94,7 +95,7 @@ public class TextFragment extends BaseFragment {
                 int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
                 if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
                     page++;
-                    getInfo();
+                    getOneDayInfo();
                 }
             }
         });
@@ -102,9 +103,6 @@ public class TextFragment extends BaseFragment {
 
     private void getInfo() {
         NetworkUtils.networkGet(url)
-                .addParams("key", APPKEY)
-                .addParams("rows", 20+"")
-                .addParams("page", page + "")
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -113,31 +111,83 @@ public class TextFragment extends BaseFragment {
 
             @Override
             public void onResponse(String response, int id) {
-                Log.i("response",response.toString());
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray data = jsonObject.optJSONArray("result");
-                    if(data!=null){
-                        Gson gson = new Gson();
-                        List<TextInfo> jokeList = gson.fromJson(data.toString(), new TypeToken<List<TextInfo>>() {
-                        }.getType());
-                        jokeInfoList.addAll(jokeList);
-                        Log.i("----",jokeList.toString());
-                        mTextAdapter.notifyDataSetChanged();
+                    mData = jsonObject.optJSONArray("data");
+                    total= mData.length();
+                    if(mData !=null){
+                        getOneDayInfo(mData);
+                        Log.i("data", mData.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+    private void getOneDayInfo(JSONArray data) {
+        String url="http://v3.wufazhuce.com:8000/api/onelist/ "+ data.optInt(page) + "/0?cchannel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
+        if(page>=total){
+            Toast.makeText(getContext(), "没有更多了—_-", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        NetworkUtils.networkGet(url)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
+                Log.i("err",e.toString());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response);
+                    JSONObject data = jsonObject.optJSONObject("data");
+                    JSONArray content_list = data.optJSONArray("content_list");
+                    Gson gson = new Gson();
+                    List<TextInfo> jokeList = gson.fromJson(content_list.toString(), new TypeToken<List<TextInfo>>() {
+                    }.getType());
+                    jokeInfoList.addAll(jokeList);
+                    mTextAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getOneDayInfo() {
+        String url="http://v3.wufazhuce.com:8000/api/onelist/ "+ mData.optInt(page) + "/0?cchannel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
+        if(page>=total){
+            Toast.makeText(getContext(), "没有更多了-_-", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        NetworkUtils.networkGet(url)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response);
+                    JSONObject data = jsonObject.optJSONObject("data");
+                    JSONArray content_list = data.optJSONArray("content_list");
+                    Gson gson = new Gson();
+                    List<TextInfo> jokeList = gson.fromJson(content_list.toString(), new TypeToken<List<TextInfo>>() {
+                    }.getType());
+                    jokeInfoList.addAll(jokeList);
+                    mTextAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

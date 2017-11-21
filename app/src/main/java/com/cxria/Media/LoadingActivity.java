@@ -3,7 +3,11 @@ package com.cxria.Media;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -76,6 +80,7 @@ public class LoadingActivity extends BaseActivity {
         });
         rotateyAnimSet(mTvRemind,mIvBg);
     }
+
 
     /**
      * 位移动画

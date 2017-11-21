@@ -1,5 +1,7 @@
 package com.cxria.Media.play;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +18,6 @@ import butterknife.OnClick;
 import uk.co.senab.photoview.PhotoView;
 
 public class ImageDetailActivity extends BaseActivity {
-
 
     @BindView(R.id.photoview)
     PhotoView mPhotoview;
@@ -38,11 +39,9 @@ public class ImageDetailActivity extends BaseActivity {
     public void initView() {
         downloadurl = getIntent().getStringExtra("url");
         mIsGif = getIntent().getBooleanExtra("isGif",false);
-        Log.i("do",downloadurl+mIsGif);
         if (mIsGif) {
             Glide.with(ImageDetailActivity.this).load(downloadurl).into(mIvImage);
             mPhotoview.setVisibility(View.GONE);
-            Toast.makeText(this, "gif", Toast.LENGTH_SHORT).show();
         } else {
             Glide.with(this).load(downloadurl).into(mPhotoview);
         }
@@ -52,11 +51,28 @@ public class ImageDetailActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_load:
-                DownLoadUtils.download(this, downloadurl,mIsGif);
+                DownLoad();
                 break;
             case R.id.iv_back:
                 finish();
                 break;
         }
+    }
+
+    private void DownLoad() {
+       new AlertDialog.Builder(this).setTitle("download...").setMessage("是否下载图片?")
+               .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+                   }
+               }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               Toast.makeText(ImageDetailActivity.this, "Download...", Toast.LENGTH_SHORT).show();
+               DownLoadUtils.download(ImageDetailActivity.this, downloadurl,mIsGif);
+           }
+       }).show();
+
     }
 }
