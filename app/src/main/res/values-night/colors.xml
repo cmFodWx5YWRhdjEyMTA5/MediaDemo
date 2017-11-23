@@ -28,4 +28,8 @@
     <color name="color_00000000">#00000000</color>
     <color name="color_b4f905b8">#b4f905b8</color>
     <color name="color_b4f908">#383838</color>
+    <color name="color_585858">#585858</color>
+    <color name="color_cccccc">#cccccc</color>
+    <color name="color_8f8f8f">#8f8f8f</color>
+    <color name="color_ededed">#494949</color>
 </resources>

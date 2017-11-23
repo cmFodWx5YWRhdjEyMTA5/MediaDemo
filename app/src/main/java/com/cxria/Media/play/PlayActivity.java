@@ -20,11 +20,17 @@ import android.widget.Toast;
 
 import com.cxria.Media.BaseActivity;
 import com.cxria.Media.R;
+import com.cxria.Media.entity.EventCategrayPos;
 import com.cxria.Media.fragment.ImageFragment;
 import com.cxria.Media.fragment.JokeFragment;
 import com.cxria.Media.fragment.RecFragment;
 import com.cxria.Media.fragment.TextFragment;
+import com.cxria.Media.fragment.VideoFragment;
 import com.cxria.Media.video.MainActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,12 +86,13 @@ public class PlayActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        EventBus.getDefault().register(this);
         mStringArray = getResources().getStringArray(R.array.title);
         for (int i = 0; i < mStringArray.length; i++) {
             mTablayout.addTab(mTablayout.newTab().setText(mStringArray[i]));
         }
         RecFragment instance = RecFragment.getInstance();
-        RecFragment instance1 = RecFragment.getInstance();
+        VideoFragment instance1 = VideoFragment.getInstance();
         ImageFragment instance2 = ImageFragment.getInstance();
         JokeFragment instance3 = JokeFragment.getInstance();
         TextFragment instance4 = TextFragment.getInstance();
@@ -141,6 +148,11 @@ public class PlayActivity extends BaseActivity {
 
         mTablayout.setupWithViewPager(mViewpager);
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventCategrayPos event) {
+        /* Do something */
+        mViewpager.setCurrentItem(event.pos);
+    };
 
 
     @OnClick({R.id.iv_main, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
@@ -155,9 +167,11 @@ public class PlayActivity extends BaseActivity {
                 closeDrawLayout();
                 break;
             case R.id.rl_main:
+                mViewpager.setCurrentItem(0);
                 closeDrawLayout();
                 break;
             case R.id.rl_movie:
+                //推荐
                 Intent intentHis=new Intent(this,HistoryTodayActivity.class);
                 startActivity(intentHis);
                 closeDrawLayout();
@@ -207,6 +221,11 @@ public class PlayActivity extends BaseActivity {
         editor.commit();//提交修改
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     private void closeDrawLayout() {
         mDrawlayout.closeDrawer(Gravity.LEFT);

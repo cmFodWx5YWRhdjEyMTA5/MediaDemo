@@ -7,33 +7,77 @@
     android:background="@color/color_write"
     android:layout_height="match_parent"
     tools:context="com.cxria.Media.play.AboutUsActivity">
-    <RelativeLayout android:layout_width="match_parent"
-                    android:id="@+id/rl"
-                    android:layout_height="50dp">
-        <ImageView android:layout_width="50dp"
-                   android:padding="8dp"
-                   android:id="@+id/iv_back"
-                   android:src="@mipmap/joke_back"
-                   android:layout_height="match_parent"/>
-        <TextView android:layout_width="wrap_content"
-                  android:gravity="center"
-                  android:layout_centerInParent="true"
-                  android:text="关于我们"
-                  android:textSize="18sp"
-                  android:textColor="@color/color_2b2b2b"
-                  android:layout_height="match_parent"/>
-        <TextView android:layout_width="wrap_content"
-                  android:gravity="center"
-                  android:layout_alignParentRight="true"
-                  android:text=""
-                  android:id="@+id/tv_deal"
-                  android:layout_marginRight="10dp"
-                  android:textSize="16sp"
-                  android:textColor="@color/color_878585"
-                  android:layout_height="match_parent"/>
-        <View android:layout_height="0.5dp"
-              android:background="@color/color_b1b1b1"
-              android:layout_alignParentBottom="true"
-              android:layout_width="match_parent"/>
-    </RelativeLayout>
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+            <RelativeLayout android:layout_width="match_parent"
+                            android:id="@+id/rl"
+                            android:layout_height="50dp">
+                <ImageView android:layout_width="50dp"
+                           android:padding="8dp"
+                           android:id="@+id/iv_back"
+                           android:src="@mipmap/joke_back"
+                           android:layout_height="match_parent"/>
+                <TextView android:layout_width="wrap_content"
+                          android:gravity="center"
+                          android:layout_centerInParent="true"
+                          android:text="关于我们"
+                          android:textSize="18sp"
+                          android:textColor="@color/color_2b2b2b"
+                          android:layout_height="match_parent"/>
+                <TextView android:layout_width="wrap_content"
+                          android:gravity="center"
+                          android:layout_alignParentRight="true"
+                          android:text=""
+                          android:id="@+id/tv_deal"
+                          android:layout_marginRight="10dp"
+                          android:textSize="16sp"
+                          android:textColor="@color/color_878585"
+                          android:layout_height="match_parent"/>
+                <View android:layout_height="0.5dp"
+                      android:background="@color/color_b1b1b1"
+                      android:layout_alignParentBottom="true"
+                      android:layout_width="match_parent"/>
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="match_parent"
+                          android:layout_below="@+id/rl"
+                          android:layout_height="match_parent">
+                <ImageView android:layout_width="140dp"
+                           android:id="@+id/iv_icon"
+                           android:src="@mipmap/tool_icon"
+                           android:layout_marginTop="20dp"
+                           android:layout_centerHorizontal="true"
+                           android:layout_height="140dp"/>
+                <TextView android:layout_width="wrap_content"
+                          android:id="@+id/tv_version"
+                          android:layout_marginTop="25dp"
+                          android:textColor="@color/color_ff0008"
+                          android:layout_centerHorizontal="true"
+                          android:layout_below="@+id/iv_icon"
+                          android:text="V 1.1.0"
+                          android:gravity="center"
+                          android:paddingLeft="10dp"
+                          android:paddingRight="10dp"
+                          android:background="@drawable/shape_rec_bg"
+                          android:layout_height="20dp"/>
+                <View android:layout_width="match_parent"
+                      android:layout_below="@+id/tv_version"
+                      android:background="@color/color_eaeaea"
+                      android:layout_marginTop="20dp"
+                      android:id="@+id/v_line"
+                      android:layout_height="0.5dp"/>
+                <TextView android:layout_width="match_parent"
+                          android:padding="20dp"
+                          android:layout_below="@id/v_line"
+                          android:text="@string/aboutus"
+                          android:layout_height="match_parent"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

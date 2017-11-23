@@ -61,7 +61,7 @@ public class ChooseActivity extends BaseActivity {
         //  获取当前模式
         boolean module = getModule();
         if(module){
-            getDelegate().setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            getDelegate().setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 //            recreate();
         }
     }

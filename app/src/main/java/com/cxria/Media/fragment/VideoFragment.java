@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,12 @@ import android.widget.Toast;
 
 import com.cxria.Media.BaseFragment;
 import com.cxria.Media.R;
-import com.cxria.Media.adapter.JokeAdapter;
 import com.cxria.Media.adapter.RecAdapter;
-import com.cxria.Media.entity.EventCategrayPos;
-import com.cxria.Media.entity.JokeInfo;
+import com.cxria.Media.adapter.VideoAdapter;
 import com.cxria.Media.entity.RecInfo;
 import com.cxria.Media.netutils.NetworkUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +32,7 @@ import okhttp3.Call;
  * Created by yukun on 17-11-17.
  */
 
-public class RecFragment extends BaseFragment {
+public class VideoFragment extends BaseFragment {
     String url = "http://lf.snssdk.com/neihan/stream/mix/v1/?content_type=-104";
     int page = 1;
     @BindView(R.id.rv_joke)
@@ -46,11 +40,11 @@ public class RecFragment extends BaseFragment {
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
     List<RecInfo> jokeInfoList=new ArrayList<>();
-    private RecAdapter mJokeAdapter;
+    private VideoAdapter mJokeAdapter;
     private LinearLayoutManager mLayoutManager;
 
-    public static RecFragment getInstance() {
-        RecFragment recFragment = new RecFragment();
+    public static VideoFragment getInstance() {
+        VideoFragment recFragment = new VideoFragment();
         return recFragment;
     }
 
@@ -63,7 +57,7 @@ public class RecFragment extends BaseFragment {
     public void initView(View inflate, Bundle savedInstanceState) {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRvJoke.setLayoutManager(mLayoutManager);
-        mJokeAdapter = new RecAdapter(getContext(),jokeInfoList);
+        mJokeAdapter = new VideoAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
@@ -97,12 +91,6 @@ public class RecFragment extends BaseFragment {
                 }
             }
         });
-        mJokeAdapter.getCategroyPos(new RecAdapter.CategroyCallBack() {
-            @Override
-            public void choosePos(int pos) {
-                EventBus.getDefault().post(new EventCategrayPos(pos));
-            }
-        });
     }
 
     private void getInfo() {
@@ -123,7 +111,7 @@ public class RecFragment extends BaseFragment {
                         RecInfo recInfo=new RecInfo();
                         JSONObject jsonObject1 = data.optJSONObject(i);
                         JSONObject group = jsonObject1.optJSONObject("group");
-                        if(!group.optString("text").equals("")){
+                        if(group.optString("text")!=null){
                             recInfo.setText(group.optString("text"));
                         }else {
                             recInfo.setText("不知道取个啥名！");
@@ -132,9 +120,12 @@ public class RecFragment extends BaseFragment {
                         JSONArray origin_video_arr = origin_video.optJSONArray("url_list");
 
                         recInfo.setPlay_url(origin_video_arr.optJSONObject(0).optString("url"));
+
+//                        recInfo.setPlay_url(group.optString("mp4_url"));
                         recInfo.setShare_url(group.optString("share_url"));
                         recInfo.setCreate_time(group.optString("create_time"));
                         recInfo.setPlay_time(group.optLong("play_count"));
+
                         JSONObject user = group.optJSONObject("user");
                         recInfo.setUser_name(user.optString("name"));
                         recInfo.setHeader(user.optString("avatar_url"));
