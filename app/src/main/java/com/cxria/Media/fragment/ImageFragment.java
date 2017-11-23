@@ -120,7 +120,6 @@ public class ImageFragment extends BaseFragment {
                         recInfo.setUser_name(user.optString("name"));
                         recInfo.setHeader(user.optString("avatar_url"));
                         JSONObject covers = group.optJSONObject("large_image");
-                        JSONObject gifvideo = group.optJSONObject("gifvideo");
                         JSONArray cover_url = covers.optJSONArray("url_list");
                         recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
                         int media_type = group.optInt("media_type");
@@ -139,7 +138,6 @@ public class ImageFragment extends BaseFragment {
                 }
             }
         });
-
     }
 
     @Override

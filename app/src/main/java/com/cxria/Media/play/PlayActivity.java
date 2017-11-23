@@ -41,7 +41,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlayActivity extends BaseActivity {
 
-
     @BindView(R.id.iv_main)
     ImageView mIvMain;
     @BindView(R.id.rl_contain)
@@ -56,7 +55,6 @@ public class PlayActivity extends BaseActivity {
     ViewPager mViewpager;
     @BindView(R.id.head)
     CircleImageView mHead;
-    List<Fragment> mFragments = new ArrayList<>();
     @BindView(R.id.im_snow)
     ImageView mImSnow;
     @BindView(R.id.rl_main)
@@ -77,6 +75,8 @@ public class PlayActivity extends BaseActivity {
     TextView mTvClose;
     private MViewPagerAdapter mMViewPagerAdapter;
     private String[] mStringArray;
+    List<Fragment> mFragments = new ArrayList<>();
+
     private boolean isNight;
 
     @Override
@@ -91,6 +91,7 @@ public class PlayActivity extends BaseActivity {
         for (int i = 0; i < mStringArray.length; i++) {
             mTablayout.addTab(mTablayout.newTab().setText(mStringArray[i]));
         }
+
         RecFragment instance = RecFragment.getInstance();
         VideoFragment instance1 = VideoFragment.getInstance();
         ImageFragment instance2 = ImageFragment.getInstance();
@@ -155,7 +156,7 @@ public class PlayActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.iv_main, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
+    @OnClick({R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_main:
@@ -193,6 +194,11 @@ public class PlayActivity extends BaseActivity {
             case R.id.tv_close:
                 closeDrawLayout();
                 finish();
+                break;
+            case R.id.head:
+                Intent intentAbus=new Intent(this,AboutUsActivity.class);
+                startActivity(intentAbus);
+                closeDrawLayout();
                 break;
         }
     }

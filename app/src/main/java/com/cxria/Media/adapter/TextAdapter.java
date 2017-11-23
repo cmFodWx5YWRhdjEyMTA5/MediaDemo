@@ -75,7 +75,7 @@ public class TextAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
 
-                    List<CollectInfo> newsList= DataSupport.where("cover = ?", textInfo.getAuthor().getWeb_url()+"").find(CollectInfo.class);
+                    List<CollectInfo> newsList= DataSupport.where("cover = ?", textInfo.getImg_url()+"").find(CollectInfo.class);
                     if(newsList.size()>0){
                         //存储了
                         Toast.makeText(context, "已经添加到收藏了-_-", Toast.LENGTH_SHORT).show();
