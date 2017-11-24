@@ -156,7 +156,7 @@ public class PlayActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
+    @OnClick({R.id.iv_chat,R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_main:
@@ -198,6 +198,11 @@ public class PlayActivity extends BaseActivity {
             case R.id.head:
                 Intent intentAbus=new Intent(this,AboutUsActivity.class);
                 startActivity(intentAbus);
+                closeDrawLayout();
+                break;
+            case R.id.iv_chat:
+                Intent intentChat=new Intent(this,ChatActivity.class);
+                startActivity(intentChat);
                 closeDrawLayout();
                 break;
         }
