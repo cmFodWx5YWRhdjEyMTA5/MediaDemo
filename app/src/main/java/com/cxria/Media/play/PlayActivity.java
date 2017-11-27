@@ -153,8 +153,7 @@ public class PlayActivity extends BaseActivity {
     public void onMessageEvent(EventCategrayPos event) {
         /* Do something */
         mViewpager.setCurrentItem(event.pos);
-    };
-
+    }
 
     @OnClick({R.id.iv_chat,R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
     public void onClick(View view) {
@@ -175,6 +174,7 @@ public class PlayActivity extends BaseActivity {
                 //推荐
                 Intent intentHis=new Intent(this,HistoryTodayActivity.class);
                 startActivity(intentHis);
+                overridePendingTransition(R.anim.rotate,0);
                 closeDrawLayout();
                 break;
             case R.id.rl_change_modul:
@@ -184,11 +184,13 @@ public class PlayActivity extends BaseActivity {
             case R.id.rl_collect:
                 Intent intentCol=new Intent(this,MyCollectActivity.class);
                 startActivity(intentCol);
+                overridePendingTransition(R.anim.rotate,0);
                 closeDrawLayout();
                 break;
             case R.id.rl_me:
                 Intent intentAbu=new Intent(this,AboutUsActivity.class);
                 startActivity(intentAbu);
+                overridePendingTransition(R.anim.rotate,0);
                 closeDrawLayout();
                 break;
             case R.id.tv_close:
@@ -198,11 +200,13 @@ public class PlayActivity extends BaseActivity {
             case R.id.head:
                 Intent intentAbus=new Intent(this,AboutUsActivity.class);
                 startActivity(intentAbus);
+                overridePendingTransition(R.anim.rotate,0);
                 closeDrawLayout();
                 break;
             case R.id.iv_chat:
                 Intent intentChat=new Intent(this,ChatActivity.class);
                 startActivity(intentChat);
+                overridePendingTransition(R.anim.rotate,0);
                 closeDrawLayout();
                 break;
         }
