@@ -2,14 +2,11 @@ package com.cxria.Media.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.cxria.Media.R;
 import com.cxria.Media.entity.ChatListInfo;
@@ -23,16 +20,10 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private List<ChatListInfo> mChatInfos;
-    private Toast mToastStart;
 
     public ChatAdapter(Context context, List<ChatListInfo> chatInfos) {
         mContext = context;
         mChatInfos = chatInfos;
-    }
-
-    public void cancenToast(){
-        if(mToastStart!=null)
-        mToastStart.cancel();
     }
 
     @Override
@@ -74,10 +65,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             ((RightHolder) holder).mTextViewRight.setText(mChatInfos.get(position).getChatInfo());
             Glide.with(mContext).load(mChatInfos.get(position).getBitmap()).placeholder(R.drawable.head_2).into(((RightHolder) holder).mImageViewRight);
-
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -103,7 +92,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mTextViewLeft= (TextView) itemView.findViewById(R.id.tv_left_content);
             mImageViewLeft=(ImageView)itemView.findViewById(R.id.ci_left_head);
         }
-    };
+    }
+
     class RightHolder extends RecyclerView.ViewHolder {
         TextView mTextViewRight;
         ImageView mImageViewRight;
