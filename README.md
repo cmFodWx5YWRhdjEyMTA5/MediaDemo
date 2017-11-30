@@ -43,6 +43,7 @@
                 e.printStackTrace();
             }
 ####　录制的设置
+
         try {
                     mCamera.unlock();
                     mediaRecorder = new MediaRecorder();
@@ -69,15 +70,18 @@
 #### 以上主要是摄像部分，还有部分摄像头设置，分辨率设置可以在`CameeraPresent`中找到方法
 #### 还有一部分是娱乐部分，主要实现了视频列表，图片列表，笑话列表，美文列表，`litepal`数据库实现收藏保存。一个App的模型几乎显现。
 #### 采用了`Android 5.0`的`Design`风格，部分主要控件都有使用`Cardview`,`Recyclerview`,`CoordinatorLayout`,`AppBarLayout`,`CollapsingToolbarLayout`,`NestedScrollView`。
-####　模式切换，使用了`Android`自带的模式切换，实现了夜间模式和白天模式，具体可见如下链接
+#### 模式切换，使用了`Android`自带的模式切换，实现了夜间模式和白天模式，具体可见如下链接
+
 [github链接](https://github.com/yukunkun/DayAndNight)
 [简书链接](http://www.jianshu.com/p/f1c09e483b11)
-####　智能聊天机器人模块：采用了图灵的第三方机器人聊天实现，智能回复
+
+#### 智能聊天机器人模块：采用了图灵的第三方机器人聊天实现，智能回复
 #### `litepal`数据库，一个郭霖维护第三方的数据库实现
 [LitePal链接](https://github.com/LitePalFramework/LitePal)
-####　部分接口实现来自于内涵段子App,聚合数据API.
-####　下载运行可预览实现
-###　上图可预览
+
+#### 部分接口实现来自于内涵段子App,聚合数据API.
+#### 下载运行可预览实现
+#### 上图可预览
 ![](http://upload-images.jianshu.io/upload_images/3001453-3a30ffd6b470dee7.jpg?)-![](http://upload-images.jianshu.io/upload_images/3001453-33b75326d448d7f9.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-5cb4315580af23c0.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-ce60019a08194fa4.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-a16b57a2e7197204.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-f89d1ffba6334c9a.jpg)
 ![](http://upload-images.jianshu.io/upload_images/3001453-17324ab400e72645.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-73cb4eb040476ea4.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-144428a649f48d44.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-c8d01c3518cdf204.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-5b8a7bfd73a53f7a.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-77068ddf42e34b9e.jpg)
 
