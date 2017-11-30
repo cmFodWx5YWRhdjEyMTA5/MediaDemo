@@ -1,5 +1,6 @@
 package com.cxria.Media.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +69,9 @@ public class TextAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     intent.putExtra("url",textInfo.getShare_url());
                     intent.putExtra("title",textInfo.getTitle());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     context.startActivity(intent);
+                    ((Activity)context).overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 }
             });
             ((MHolder) holder).mIvCollect.setOnClickListener(new View.OnClickListener() {

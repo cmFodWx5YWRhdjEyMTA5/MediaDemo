@@ -1,9 +1,12 @@
 package com.cxria.Media.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,7 +58,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MHolder) {
             final CollectInfo recInfo = jokeInfoList.get(position);
             ((MHolder) holder).mTvName.setText(recInfo.getName());
@@ -79,19 +82,34 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         Intent intent=new Intent(context, VideoPlayActivity.class);
                         intent.putExtra("imagepath",recInfo.getPlay_url()+"#"+recInfo.getCover()+"#"+recInfo.getTitle());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+                        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.KITKAT_WATCH){
+                            context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,((MHolder) holder).mImCover,"shareView").toBundle());
+                        }else {
+                            context.startActivity(intent);
+                            ((Activity)context).overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+                        }
                     }else if(recInfo.getType()==2){
                         Intent intent=new Intent(context, ImageDetailActivity.class);
                         intent.putExtra("url",recInfo.getPlay_url());
                         intent.putExtra("isGif",recInfo.isGif());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+                        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.KITKAT_WATCH){
+                            context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,((MHolder) holder).mImCover,"shareView").toBundle());
+                        }else {
+                            context.startActivity(intent);
+                            ((Activity)context).overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+                        }
                     }else if(recInfo.getType()==3){
                         Intent intent=new Intent(context, TextDetailActivity.class);
                         intent.putExtra("url",recInfo.getPlay_url());
                         intent.putExtra("title",recInfo.getTitle());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
+                        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.KITKAT_WATCH){
+                            context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,((MHolder) holder).mImCover,"shareView").toBundle());
+                        }else {
+                            context.startActivity(intent);
+                            ((Activity)context).overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+                        }
                     }
                 }
             });

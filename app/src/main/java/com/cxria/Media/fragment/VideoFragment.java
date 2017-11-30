@@ -121,7 +121,6 @@ public class VideoFragment extends BaseFragment {
 
                         recInfo.setPlay_url(origin_video_arr.optJSONObject(0).optString("url"));
 
-//                        recInfo.setPlay_url(group.optString("mp4_url"));
                         recInfo.setShare_url(group.optString("share_url"));
                         recInfo.setCreate_time(group.optString("create_time"));
                         recInfo.setPlay_time(group.optLong("play_count"));

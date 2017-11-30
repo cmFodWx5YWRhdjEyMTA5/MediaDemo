@@ -61,4 +61,5 @@ public class TextDetailActivity extends BaseActivity {
     public void onClick() {
         finish();
     }
+
 }

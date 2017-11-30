@@ -55,6 +55,7 @@ public class ImageDetailActivity extends BaseActivity {
                 break;
             case R.id.iv_back:
                 finish();
+                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 break;
         }
     }

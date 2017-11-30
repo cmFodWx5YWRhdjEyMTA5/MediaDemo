@@ -184,13 +184,13 @@ public class PlayActivity extends BaseActivity {
             case R.id.rl_collect:
                 Intent intentCol=new Intent(this,MyCollectActivity.class);
                 startActivity(intentCol);
-                overridePendingTransition(R.anim.rotate,0);
+                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 closeDrawLayout();
                 break;
             case R.id.rl_me:
                 Intent intentAbu=new Intent(this,AboutUsActivity.class);
                 startActivity(intentAbu);
-                overridePendingTransition(R.anim.rotate,0);
+                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 closeDrawLayout();
                 break;
             case R.id.tv_close:
@@ -200,13 +200,13 @@ public class PlayActivity extends BaseActivity {
             case R.id.head:
                 Intent intentAbus=new Intent(this,AboutUsActivity.class);
                 startActivity(intentAbus);
-                overridePendingTransition(R.anim.rotate,0);
+                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 closeDrawLayout();
                 break;
             case R.id.iv_chat:
                 Intent intentChat=new Intent(this,ChatActivity.class);
                 startActivity(intentChat);
-                overridePendingTransition(R.anim.rotate,0);
+                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 closeDrawLayout();
                 break;
         }

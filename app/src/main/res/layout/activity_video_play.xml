@@ -8,6 +8,7 @@
     tools:context="com.cxria.Media.video.VideoPlayActivity">
     <cn.jzvd.JZVideoPlayerStandard
         android:id="@+id/videoplayer"
+        android:transitionName="shareView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

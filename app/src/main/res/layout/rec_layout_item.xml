@@ -51,6 +51,7 @@
                     android:layout_height="280dp">
         <ImageView android:layout_width="match_parent"
                    android:id="@+id/im_cover"
+                   android:transitionName="shareview"
                    android:scaleType="centerCrop"
                    android:layout_height="match_parent"/>
         <TextView android:layout_width="match_parent"

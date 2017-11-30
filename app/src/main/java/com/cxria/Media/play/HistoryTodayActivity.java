@@ -5,6 +5,7 @@ import android.provider.ContactsContract;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -105,5 +106,12 @@ public class HistoryTodayActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     public void onClick() {
         finish();
+        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+        return super.onKeyDown(keyCode, event);
     }
 }

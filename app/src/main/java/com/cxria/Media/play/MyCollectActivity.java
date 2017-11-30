@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -70,6 +71,7 @@ public class MyCollectActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
+                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 break;
             case R.id.tv_deal:
                 delete();
@@ -87,4 +89,10 @@ public class MyCollectActivity extends BaseActivity {
                 }).show();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+        return super.onKeyDown(keyCode, event);
+
+    }
 }

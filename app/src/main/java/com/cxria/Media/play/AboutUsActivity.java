@@ -1,10 +1,12 @@
 package com.cxria.Media.play;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
@@ -63,5 +65,12 @@ public class AboutUsActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     public void onClick() {
         finish();
+        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
+        return super.onKeyDown(keyCode, event);
     }
 }
