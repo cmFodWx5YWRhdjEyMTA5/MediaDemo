@@ -84,7 +84,21 @@
 #### 上图可预览
 ![](http://upload-images.jianshu.io/upload_images/3001453-3a30ffd6b470dee7.jpg?)-![](http://upload-images.jianshu.io/upload_images/3001453-33b75326d448d7f9.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-5cb4315580af23c0.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-ce60019a08194fa4.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-a16b57a2e7197204.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-f89d1ffba6334c9a.jpg)
 ![](http://upload-images.jianshu.io/upload_images/3001453-17324ab400e72645.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-73cb4eb040476ea4.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-144428a649f48d44.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-c8d01c3518cdf204.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-5b8a7bfd73a53f7a.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-77068ddf42e34b9e.jpg)
-
+####　用到的第三方库
+        compile 'com.jakewharton:butterknife:8.4.0'
+        compile 'com.github.chrisbanes.photoview:library:1.2.4'
+        compile 'com.github.bumptech.glide:glide:3.6.1'
+        compile 'cn.jzvd:jiaozivideoplayer:6.0.2'
+        compile 'com.lyf:yflibrary:1.0.2'
+        compile 'com.android.support:design:25.3.1'
+        compile 'de.hdodenhof:circleimageview:2.0.0'
+        compile 'org.litepal.android:core:1.6.0'
+        compile 'com.zhy:okhttputils:2.6.2'
+        compile 'com.google.code.gson:gson:2.8.2'
+        compile 'com.android.support:cardview-v7:25.3.1'
+        compile 'com.haozhang.libary:android-slanted-textview:1.2'
+        compile 'com.bigkoo:convenientbanner:2.0.5'
+        compile 'org.greenrobot:eventbus:3.1.1'
 
 
 

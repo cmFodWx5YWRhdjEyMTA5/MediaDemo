@@ -76,7 +76,6 @@ public class PlayActivity extends BaseActivity {
     private MViewPagerAdapter mMViewPagerAdapter;
     private String[] mStringArray;
     List<Fragment> mFragments = new ArrayList<>();
-
     private boolean isNight;
 
     @Override
