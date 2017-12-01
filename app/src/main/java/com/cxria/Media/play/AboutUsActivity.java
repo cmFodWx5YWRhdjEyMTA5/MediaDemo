@@ -65,7 +65,6 @@ public class AboutUsActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     public void onClick() {
         finish();
-        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
     }
 
     @Override
