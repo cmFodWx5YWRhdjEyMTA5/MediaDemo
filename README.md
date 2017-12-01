@@ -85,6 +85,7 @@
 ![](http://upload-images.jianshu.io/upload_images/3001453-3a30ffd6b470dee7.jpg?)-![](http://upload-images.jianshu.io/upload_images/3001453-33b75326d448d7f9.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-5cb4315580af23c0.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-ce60019a08194fa4.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-a16b57a2e7197204.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-f89d1ffba6334c9a.jpg)
 ![](http://upload-images.jianshu.io/upload_images/3001453-17324ab400e72645.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-73cb4eb040476ea4.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-144428a649f48d44.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-c8d01c3518cdf204.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-5b8a7bfd73a53f7a.jpg)-![](http://upload-images.jianshu.io/upload_images/3001453-77068ddf42e34b9e.jpg)
 ####　用到的第三方库
+
         compile 'com.jakewharton:butterknife:8.4.0'
         compile 'com.github.chrisbanes.photoview:library:1.2.4'
         compile 'com.github.bumptech.glide:glide:3.6.1'
