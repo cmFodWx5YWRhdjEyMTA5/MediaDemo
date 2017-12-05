@@ -30,7 +30,6 @@ import butterknife.OnClick;
 
 public class MyCollectActivity extends BaseActivity {
 
-
     @BindView(R.id.iv_back)
     ImageView mIvBack;
     @BindView(R.id.tv_deal)

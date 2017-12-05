@@ -133,7 +133,6 @@ public class ChatActivity extends BaseActivity {
                     JSONObject result = jsonObject.optJSONObject("result");
                     String text = result.optString("text");
                     getMsg(text);
-                    Log.i("--res", text);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

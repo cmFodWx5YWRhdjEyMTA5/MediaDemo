@@ -24,6 +24,7 @@ import com.cxria.Media.entity.EventCategrayPos;
 import com.cxria.Media.fragment.ImageFragment;
 import com.cxria.Media.fragment.JokeFragment;
 import com.cxria.Media.fragment.RecFragment;
+import com.cxria.Media.fragment.SpecialTxtFragment;
 import com.cxria.Media.fragment.TextFragment;
 import com.cxria.Media.fragment.VideoFragment;
 import com.cxria.Media.video.MainActivity;
@@ -93,15 +94,16 @@ public class PlayActivity extends BaseActivity {
 
         RecFragment instance = RecFragment.getInstance();
         VideoFragment instance1 = VideoFragment.getInstance();
-        ImageFragment instance2 = ImageFragment.getInstance();
-        JokeFragment instance3 = JokeFragment.getInstance();
-        TextFragment instance4 = TextFragment.getInstance();
-
+        SpecialTxtFragment instance2=SpecialTxtFragment.getInstance();
+        ImageFragment instance3 = ImageFragment.getInstance();
+        JokeFragment instance4 = JokeFragment.getInstance();
+        TextFragment instance5 = TextFragment.getInstance();
         mFragments.add(instance);
         mFragments.add(instance1);
         mFragments.add(instance2);
         mFragments.add(instance3);
         mFragments.add(instance4);
+        mFragments.add(instance5);
         setAdapter();
         setListener();
     }
@@ -109,7 +111,7 @@ public class PlayActivity extends BaseActivity {
     private void setAdapter() {
         mMViewPagerAdapter = new MViewPagerAdapter(getSupportFragmentManager(), mFragments, mStringArray);
         mViewpager.setAdapter(mMViewPagerAdapter);
-        mViewpager.setOffscreenPageLimit(5);
+        mViewpager.setOffscreenPageLimit(6);
     }
 
     private void setListener() {
@@ -129,6 +131,7 @@ public class PlayActivity extends BaseActivity {
 
             }
         });
+
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

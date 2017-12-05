@@ -103,6 +103,8 @@ public class RecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((HeaderHolder) holder).mTvImage.setOnClickListener(new Listener());
             ((HeaderHolder) holder).mTvJoke.setOnClickListener(new Listener());
             ((HeaderHolder) holder).mTvTxt.setOnClickListener(new Listener());
+            ((HeaderHolder) holder).mTvEssay.setOnClickListener(new Listener());
+
         }
 
         if (holder instanceof MHolder) {
@@ -195,14 +197,17 @@ public class RecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case R.id.tv_video:
                     mCategroyCallBack.choosePos(1);
                     break;
-                case R.id.tv_image:
+                case R.id.tv_txt:
                     mCategroyCallBack.choosePos(2);
                     break;
-                case R.id.tv_joke:
+                case R.id.tv_image:
                     mCategroyCallBack.choosePos(3);
                     break;
-                case R.id.tv_txt:
+                case R.id.tv_joke:
                     mCategroyCallBack.choosePos(4);
+                    break;
+                case R.id.tv_essay:
+                    mCategroyCallBack.choosePos(5);
                     break;
             }
         }
@@ -250,6 +255,9 @@ public class RecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView mTvJoke;
         @BindView(R.id.tv_txt)
         TextView mTvTxt;
+        @BindView(R.id.tv_essay)
+        TextView mTvEssay;
+
 
         public HeaderHolder(View itemView) {
             super(itemView);

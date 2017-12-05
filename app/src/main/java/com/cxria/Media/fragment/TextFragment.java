@@ -160,6 +160,9 @@ public class TextFragment extends BaseFragment {
     }
 
     private void getOneDayInfo() {
+        if(mData==null){
+            return;
+        }
         String url="http://v3.wufazhuce.com:8000/api/onelist/ "+ mData.optInt(page) + "/0?cchannel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
         if(page>=total){
             Toast.makeText(getContext(), "没有更多了-_-", Toast.LENGTH_SHORT).show();
