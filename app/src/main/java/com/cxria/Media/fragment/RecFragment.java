@@ -1,5 +1,6 @@
 package com.cxria.Media.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,6 +68,10 @@ public class RecFragment extends BaseFragment {
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
+        mSw.setColorSchemeResources(android.R.color.holo_blue_light,android.R.color.holo_green_light,android.R.color.black,
+                 android.R.color.holo_red_light, android.R.color.holo_orange_light
+                );
+        mSw.setRefreshing(true);
     }
 
     private void setListener() {
@@ -145,6 +150,7 @@ public class RecFragment extends BaseFragment {
                         jokeInfoList.add(recInfo);
                     }
                     mJokeAdapter.notifyDataSetChanged();
+                    mSw.setRefreshing(false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
