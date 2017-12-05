@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:yk="http://schemas.android.com/apk/res-auto"
     tools:context="com.cxria.Media.play.TextDetailActivity">
     <RelativeLayout android:layout_width="match_parent"
                     android:id="@+id/rl"
@@ -34,4 +35,13 @@
              android:id="@+id/webview"
              android:layout_height="match_parent">
     </WebView>
+    <com.cxria.Media.views.WaterLoadView
+        android:layout_width="match_parent"
+        android:id="@+id/water_load"
+        android:layout_height="145dp"
+        yk:circleColor="#00ff40"
+        yk:circleTop="120"
+        android:layout_centerInParent="true"
+        yk:circleSmallRadio="10"
+        yk:loadTime="1000" />
 </RelativeLayout>

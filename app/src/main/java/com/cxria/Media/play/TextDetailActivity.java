@@ -1,15 +1,19 @@
 package com.cxria.Media.play;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cxria.Media.BaseActivity;
 import com.cxria.Media.R;
+import com.cxria.Media.views.WaterLoadView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +29,8 @@ public class TextDetailActivity extends BaseActivity {
     RelativeLayout mRl;
     @BindView(R.id.webview)
     WebView mWebview;
+    @BindView(R.id.water_load)
+    WaterLoadView mProgress;
 
     @Override
     public int getLayout() {
@@ -33,17 +39,28 @@ public class TextDetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        String url=getIntent().getStringExtra("url");
-        String title=getIntent().getStringExtra("title");
+        String url = getIntent().getStringExtra("url");
+        String title = getIntent().getStringExtra("title");
         mTvTitle.setText(title);
         mWebview.getSettings().setJavaScriptEnabled(true);
         //加载需要显示的网页
         mWebview.loadUrl(url);
-        mWebview.setWebViewClient(new WebViewClient(){
+        mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mProgress.setVisibility(View.GONE);
             }
         });
     }
