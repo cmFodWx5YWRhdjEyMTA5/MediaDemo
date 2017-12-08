@@ -111,7 +111,7 @@ public class PlayActivity extends BaseActivity {
     private void setAdapter() {
         mMViewPagerAdapter = new MViewPagerAdapter(getSupportFragmentManager(), mFragments, mStringArray);
         mViewpager.setAdapter(mMViewPagerAdapter);
-        mViewpager.setOffscreenPageLimit(6);
+        mViewpager.setOffscreenPageLimit(3);
     }
 
     private void setListener() {
