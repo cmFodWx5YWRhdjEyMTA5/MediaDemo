@@ -27,9 +27,9 @@ public class DownLoadUtils {
         //设置下载的目录
 //        request.setDestinationUri(Uri.fromFile(new File(Environment.getExternalStorageDirectory()+"/moral/", System.currentTimeMillis()+".mp4")));
         if(isGif){
-            request.setDestinationInExternalPublicDir(Environment.getExternalStorageDirectory()+"/Media/", System.currentTimeMillis()+".gif" );
+            request.setDestinationInExternalPublicDir(Environment.getExternalStorageDirectory().getAbsolutePath()+"/MediaCamera/", System.currentTimeMillis()+".gif" );
         }else {
-            request.setDestinationInExternalPublicDir(Environment.getExternalStorageDirectory()+"/Media/", System.currentTimeMillis()+".png" );
+            request.setDestinationInExternalPublicDir(Environment.getExternalStorageDirectory().getAbsolutePath()+"/MediaCamera/", System.currentTimeMillis()+".png" );
         }
 //        long downloadId = dm.enqueue(request);
         dm.enqueue(request);
