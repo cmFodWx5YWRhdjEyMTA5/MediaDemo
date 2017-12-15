@@ -65,12 +65,10 @@ public class BallView extends View {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int width=0;
         int height=0 ;
-        if (widthMode == MeasureSpec.EXACTLY)
-        {
+        if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
         }
-        if (heightMode == MeasureSpec.EXACTLY)
-        {
+        if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         }
         mWidth = width;

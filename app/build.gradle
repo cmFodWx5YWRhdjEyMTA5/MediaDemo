@@ -12,6 +12,15 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+//    signingConfigs{
+//        signConfig {
+//            storeFile file ('Media.jks')//签名文件路径，
+//            //keystore的路径通常使用项目根目录的相对路径，但也可以是使用绝对路径，尽管这不推荐
+//            storePassword '123456'
+//            keyAlias '123456'
+//            keyPassword '123456'
+//        }
+//    }
     buildTypes {
         release {
             minifyEnabled false
@@ -44,4 +53,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.1.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'me.everything:overscroll-decor-android:1.0.4'
 }

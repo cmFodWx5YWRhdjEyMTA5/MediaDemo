@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class PlayActivity extends BaseActivity {
 
@@ -74,6 +76,8 @@ public class PlayActivity extends BaseActivity {
     RelativeLayout mRlMe;
     @BindView(R.id.tv_close)
     TextView mTvClose;
+    @BindView(R.id.sc_contain)
+    ScrollView mScrollview;
     private MViewPagerAdapter mMViewPagerAdapter;
     private String[] mStringArray;
     List<Fragment> mFragments = new ArrayList<>();
@@ -106,6 +110,8 @@ public class PlayActivity extends BaseActivity {
         mFragments.add(instance5);
         setAdapter();
         setListener();
+        OverScrollDecoratorHelper.setUpOverScroll(mScrollview);
+
     }
 
     private void setAdapter() {
