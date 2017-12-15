@@ -1,6 +1,7 @@
 # MediaDemo
 #### 一个摄像的demo,手机全屏拍照,摄像,一些参数设置
 ##　后期增加了很多功能，基本完成了一个视频娱乐为一体的App
+[Media APK下载](https://github.com/yukunkun/MediaDemo/blob/master/apk/Media.apk)
 ### 摄像采用的是Android 原生的Camera 类实现，包括视屏分辨率选择实现，预览变形，视频质量问题都可以在这里找到解决方法，采用MediaRecorder
 ### 实现的录制功能，贴上主要的代码
 ####　Camera的预览设置 
@@ -101,39 +102,7 @@
         compile 'com.bigkoo:convenientbanner:2.0.5'
         compile 'org.greenrobot:eventbus:3.1.1'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![](https://github.com/yukunkun/MediaDemo/blob/master/image/Media.png)
 
 
 
