@@ -54,4 +54,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'me.everything:overscroll-decor-android:1.0.4'
+    compile files('libs/pinyin4j-2.5.0.jar')
 }

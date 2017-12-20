@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:sidebar="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:background="@color/color_write"
     tools:context="com.cxria.Media.play.HistoryTodayActivity">
     <RelativeLayout android:layout_width="match_parent"
@@ -30,9 +32,22 @@
               android:layout_alignParentBottom="true"
               android:layout_width="match_parent"/>
     </RelativeLayout>
-    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                                            android:id="@+id/recyclerview"
-                                            android:layout_below="@+id/rl"
-                                            android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <ListView android:layout_width="match_parent"
+                  android:id="@+id/recyclerview"
+                  android:layout_height="match_parent">
+        </ListView>
+        <com.cxria.Media.views.SideBar
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:paddingRight="10dp"
+            sidebar:scaleTime="1"
+            android:layout_width="200dp"
+            android:id="@+id/bar"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</LinearLayout>
