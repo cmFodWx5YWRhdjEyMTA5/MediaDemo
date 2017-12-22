@@ -2,6 +2,7 @@ package com.cxria.Media.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.cxria.Media.adapter.TextAdapter;
 import com.cxria.Media.entity.JokeInfo;
 import com.cxria.Media.entity.TextInfo;
 import com.cxria.Media.netutils.NetworkUtils;
+import com.cxria.Media.views.SwipeItemLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -68,6 +70,8 @@ public class TextFragment extends BaseFragment {
         mRvJoke.setLayoutManager(mLayoutManager);
         mTextAdapter = new TextAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mTextAdapter);
+        mRvJoke.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
+        mRvJoke.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
         getInfo();
         setListener();
     }

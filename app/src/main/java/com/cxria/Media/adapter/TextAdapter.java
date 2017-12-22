@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class TextAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MHolder) {
             final TextInfo textInfo = jokeInfoList.get(position);
             ((MHolder) holder).mTvTitle.setText(textInfo.getTitle());
@@ -97,6 +98,14 @@ public class TextAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
+            ((MHolder) holder).mButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    notifyItemRemoved(position);
+                    jokeInfoList.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 
@@ -120,6 +129,8 @@ public class TextAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView mTvDes;
         @BindView(R.id.tv_forword)
         TextView mTvForword;
+        @BindView(R.id.delete)
+        Button mButton;
 
         public MHolder(View itemView) {
             super(itemView);
