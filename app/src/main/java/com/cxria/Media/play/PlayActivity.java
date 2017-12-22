@@ -234,6 +234,8 @@ public class PlayActivity extends BaseActivity {
                 AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
         //  重启Activity
         recreate();
+        //延迟导致重启一个destory的Activity，会失败。
+//        overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
         saveModule(isNight);
     }
 

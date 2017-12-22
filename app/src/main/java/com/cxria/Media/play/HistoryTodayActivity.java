@@ -52,7 +52,6 @@ public class HistoryTodayActivity extends BaseActivity {
     @BindView(R.id.bar)
     SideBar mBar;
 
-    private LinearLayoutManager mLayoutManager;
     private List<HistoryInfo> mList = new ArrayList<>();
     private String APPKEY = "1c88cd3077c448b199b227a5eccca0ed";
     private HistoryAdapter mHistoryAdapter;
@@ -71,6 +70,9 @@ public class HistoryTodayActivity extends BaseActivity {
         mBar.setOnStrSelectCallBack(new ISideBarSelectCallBack() {
             @Override
             public void onSelectStr(int index, String selectStr) {
+                if(mSortModule==null){
+                    return;
+                }
                 for (int i = 0; i < mSortModule.size() ; i++){
                     if(mSortModule.get(i).getSortLetters().equals(selectStr)){
                         mListview.setSelection(i);
@@ -131,12 +133,11 @@ public class HistoryTodayActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     private List<SortModel> getSortModule() {
 
-        List<SortModel> filterDateList = new ArrayList<SortModel>();
+        List<SortModel> filterDateList = new ArrayList<>();
         for (int i = 0; i < mList.size(); i++) {
             String pinYinFirstLetter = Cn2Spell.getPinYinFirstLetter(mList.get(i).getTitle());
             SortModel sortModel = new SortModel(mList.get(i).getTitle(), pinYinFirstLetter.toUpperCase().charAt(0) + "", mList.get(i).getYear(), mList.get(i).getMonth(), mList.get(i).getDay());
@@ -149,19 +150,5 @@ public class HistoryTodayActivity extends BaseActivity {
     @OnClick(R.id.iv_back)
     public void onClick() {
         finish();
-        overridePendingTransition(R.anim.rotate, R.anim.rotate_out);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        overridePendingTransition(R.anim.rotate, R.anim.rotate_out);
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

@@ -103,7 +103,6 @@
         compile 'com.bigkoo:convenientbanner:2.0.5'
         compile 'org.greenrobot:eventbus:3.1.1'
 
-![二维码app下载](https://github.com/yukunkun/MediaDemo/blob/master/image/media.png)
 
 
 
