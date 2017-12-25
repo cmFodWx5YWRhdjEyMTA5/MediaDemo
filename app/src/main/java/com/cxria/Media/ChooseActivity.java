@@ -31,6 +31,8 @@ public class ChooseActivity extends BaseActivity {
     TextView mTvVideo;
     @BindView(R.id.ll_bg)
     LinearLayout mLlBg;
+    private Random mRandom;
+    private List<Integer> mMImages;
 
     @Override
     public int getLayout() {
@@ -39,18 +41,18 @@ public class ChooseActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        List<Integer> mImages = new ArrayList<>();
-        mImages.add(R.drawable.bg_1);
-        mImages.add(R.drawable.bg_2);
-        mImages.add(R.drawable.bg_3);
-        mImages.add(R.drawable.bg_4);
-        mImages.add(R.drawable.bg_5);
-        mImages.add(R.drawable.bg_6);
-        mImages.add(R.drawable.bg_7);
-        mImages.add(R.drawable.bg_8);
-        Random random = new Random();
-        int ran = random.nextInt(8);
-        mIvBack.setBackgroundResource(mImages.get(ran));
+        mMImages = new ArrayList<>();
+        mMImages.add(R.drawable.bg_1);
+        mMImages.add(R.drawable.bg_2);
+        mMImages.add(R.drawable.bg_3);
+        mMImages.add(R.drawable.bg_4);
+        mMImages.add(R.drawable.bg_5);
+        mMImages.add(R.drawable.bg_6);
+        mMImages.add(R.drawable.bg_7);
+        mMImages.add(R.drawable.bg_8);
+        mRandom = new Random();
+        int ran = mRandom.nextInt(8);
+        mIvBack.setBackgroundResource(mMImages.get(ran));
         startAmim();
 
         setNightMode();
@@ -84,7 +86,7 @@ public class ChooseActivity extends BaseActivity {
         startAmim();
     }
 
-    @OnClick({R.id.tv_play, R.id.tv_video})
+    @OnClick({R.id.tv_play, R.id.tv_video,R.id.iv_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_play:
@@ -94,6 +96,10 @@ public class ChooseActivity extends BaseActivity {
             case R.id.tv_video:
                 Intent intent2 = new Intent(ChooseActivity.this, MainActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.iv_back:
+                int ran = mRandom.nextInt(8);
+                mIvBack.setBackgroundResource(mMImages.get(ran));
                 break;
         }
     }
