@@ -3,6 +3,7 @@ package com.cxria.Media.fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.cxria.Media.adapter.TextAdapter;
 import com.cxria.Media.entity.JokeInfo;
 import com.cxria.Media.entity.TextInfo;
 import com.cxria.Media.netutils.NetworkUtils;
+import com.cxria.Media.utils.SpacesDoubleDecoration;
 import com.cxria.Media.views.SwipeItemLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -52,6 +54,9 @@ public class TextFragment extends BaseFragment {
     private static String APPKEY="29d35d2d909845fd91dd71d12a460723";
     private int total;
     private JSONArray mData;
+    boolean isVertical=true;
+    private GridLayoutManager mGridLayoutManager;
+    private SpacesDoubleDecoration mSpacesDoubleDecoration;
 
     public static TextFragment getInstance() {
         TextFragment recFragment = new TextFragment();
@@ -63,11 +68,28 @@ public class TextFragment extends BaseFragment {
         return R.layout.fragment_rec;
     }
 
+    public void getLayoutTag(boolean isTag){
+        isVertical=isTag;
+        if(isVertical){
+            mRvJoke.setLayoutManager(mLayoutManager);
+        }else {
+            mRvJoke.setLayoutManager(mGridLayoutManager);
+            mSpacesDoubleDecoration=new SpacesDoubleDecoration(0,1,1,0);
+            mRvJoke.addItemDecoration(mSpacesDoubleDecoration);
+        }
+        mTextAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void initView(View inflate, Bundle savedInstanceState) {
         mTime = System.currentTimeMillis() / 1000;
         mLayoutManager = new LinearLayoutManager(getContext());
-        mRvJoke.setLayoutManager(mLayoutManager);
+        mGridLayoutManager=new GridLayoutManager(getContext(),2);
+        if(isVertical){
+            mRvJoke.setLayoutManager(mLayoutManager);
+        }else {
+            mRvJoke.setLayoutManager(mGridLayoutManager);
+        }
         mTextAdapter = new TextAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mTextAdapter);
         mRvJoke.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
@@ -96,10 +118,24 @@ public class TextFragment extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
-                if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
-                    page++;
-                    getOneDayInfo();
+//                int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
+//                if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
+//                    page++;
+//                    getOneDayInfo();
+//                }
+                if(isVertical){
+                    int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
+                    if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
+                        page++;
+                        getInfo();
+                    }
+                }else {
+                    //格子布局
+                    int lastVisibleItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+                    if(lastVisibleItemPosition==mGridLayoutManager.getItemCount()-1){
+                        page++;
+                        getInfo();
+                    }
                 }
             }
         });

@@ -32,9 +32,19 @@
                        android:paddingLeft="8dp"
                        android:paddingRight="8dp"
                        android:layout_alignParentRight="true"
-                       android:layout_marginLeft="5dp"
                        android:layout_centerVertical="true"
-                       android:layout_height="40dp"/>
+                       android:layout_height="match_parent"/>
+            <ImageView android:layout_width="40dp"
+                       android:src="@mipmap/setting_icon"
+                       android:id="@+id/iv_setting"
+                       android:layout_toLeftOf="@+id/iv_chat"
+                       android:paddingLeft="5dp"
+                       android:visibility="gone"
+                       android:paddingTop="5dp"
+                       android:paddingBottom="2dp"
+                       android:paddingRight="0dp"
+                       android:layout_centerVertical="true"
+                       android:layout_height="match_parent"/>
         </RelativeLayout>
         <View android:layout_width="match_parent"
               android:layout_height="0.5dp"

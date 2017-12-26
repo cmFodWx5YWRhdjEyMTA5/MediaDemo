@@ -46,8 +46,8 @@
                     android:layout_height="wrap_content">
         <ImageView android:layout_width="match_parent"
                    android:id="@+id/im_cover"
-                   android:layout_marginTop="5dp"
                    android:scaleType="center"
+                   android:layout_marginTop="5dp"
                    android:layout_height="wrap_content"/>
     </RelativeLayout>
     <TextView android:layout_width="match_parent"

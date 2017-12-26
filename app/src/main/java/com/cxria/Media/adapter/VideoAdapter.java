@@ -36,9 +36,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<RecInfo> jokeInfoList;
+    boolean isVertical=true;
 
-
-
+    public void setTextViewWidth( boolean isVertical){
+        this.isVertical=isVertical;
+    }
     public VideoAdapter(Context context, List<RecInfo> jokeInfoList) {
         this.context = context;
         this.jokeInfoList = jokeInfoList;
@@ -60,6 +62,11 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String time=format.format(new Date(Long.valueOf(recInfo.getCreate_time())*1000));
 
             ((MHolder) holder).mTvTimes.setText(time);
+            if(!isVertical){
+                ((MHolder) holder).mTvTimes.setVisibility(View.GONE);
+            }else {
+                ((MHolder) holder).mTvTimes.setVisibility(View.VISIBLE);
+            }
             ((MHolder) holder).mTvPlayTimes.setText(recInfo.getPlay_time()+"次");
             Glide.with(context).load(recInfo.getCover()).into(((MHolder) holder).mImCover);
             Glide.with(context).load(recInfo.getHeader()).into(((MHolder) holder).mCiHead);

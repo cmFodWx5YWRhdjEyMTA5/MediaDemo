@@ -18,6 +18,7 @@ import com.cxria.Media.R;
 import com.cxria.Media.entity.CollectInfo;
 import com.cxria.Media.entity.RecInfo;
 import com.cxria.Media.play.ImageDetailActivity;
+import com.cxria.Media.utils.ScreenUtils;
 import com.cxria.Media.video.VideoPlayActivity;
 
 import org.litepal.crud.DataSupport;
@@ -37,7 +38,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<RecInfo> jokeInfoList;
+    boolean isVertical=true;
+    private int mWidth;
 
+    public void setTextViewWidth( boolean isVertical){
+        this.isVertical=isVertical;
+    }
 
 
     public ImageAdapter(Context context, List<RecInfo> jokeInfoList) {
@@ -48,6 +54,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.image_layout_item, null);
+        mWidth = ScreenUtils.instance().getHeight(context);
         return new MHolder(view);
     }
 

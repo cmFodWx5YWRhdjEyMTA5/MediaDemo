@@ -25,6 +25,7 @@ import com.cxria.Media.entity.EventCategrayPos;
 import com.cxria.Media.fragment.ImageFragment;
 import com.cxria.Media.fragment.JokeFragment;
 import com.cxria.Media.fragment.RecFragment;
+import com.cxria.Media.fragment.SettingFragment;
 import com.cxria.Media.fragment.SpecialTxtFragment;
 import com.cxria.Media.fragment.TextFragment;
 import com.cxria.Media.fragment.VideoFragment;
@@ -72,6 +73,8 @@ public class PlayActivity extends BaseActivity {
     RelativeLayout mRlChangeModul;
     @BindView(R.id.im_ball)
     ImageView mImBall;
+    @BindView(R.id.iv_setting)
+    ImageView mIvSetting;
     @BindView(R.id.rl_me)
     RelativeLayout mRlMe;
     @BindView(R.id.tv_close)
@@ -82,6 +85,10 @@ public class PlayActivity extends BaseActivity {
     private String[] mStringArray;
     List<Fragment> mFragments = new ArrayList<>();
     private boolean isNight;
+    private VideoFragment mInstance1;
+    private ImageFragment mInstance3;
+    private JokeFragment mInstance4;
+    private TextFragment mInstance5;
 
     @Override
     public int getLayout() {
@@ -97,21 +104,20 @@ public class PlayActivity extends BaseActivity {
         }
 
         RecFragment instance = RecFragment.getInstance();
-        VideoFragment instance1 = VideoFragment.getInstance();
+        mInstance1 = VideoFragment.getInstance();
         SpecialTxtFragment instance2=SpecialTxtFragment.getInstance();
-        ImageFragment instance3 = ImageFragment.getInstance();
-        JokeFragment instance4 = JokeFragment.getInstance();
-        TextFragment instance5 = TextFragment.getInstance();
+        mInstance3 = ImageFragment.getInstance();
+        mInstance4 = JokeFragment.getInstance();
+        mInstance5 = TextFragment.getInstance();
         mFragments.add(instance);
-        mFragments.add(instance1);
+        mFragments.add(mInstance1);
         mFragments.add(instance2);
-        mFragments.add(instance3);
-        mFragments.add(instance4);
-        mFragments.add(instance5);
+        mFragments.add(mInstance3);
+        mFragments.add(mInstance4);
+        mFragments.add(mInstance5);
         setAdapter();
         setListener();
         OverScrollDecoratorHelper.setUpOverScroll(mScrollview);
-
     }
 
     private void setAdapter() {
@@ -147,6 +153,11 @@ public class PlayActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 mTablayout.setScrollPosition(position, 0, true);
+                if(position==0||position==2||position==3||position==4){
+                    mIvSetting.setVisibility(View.GONE);
+                }else {
+                    mIvSetting.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -160,10 +171,45 @@ public class PlayActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventCategrayPos event) {
         /* Do something */
-        mViewpager.setCurrentItem(event.pos);
+        if(event.pos<1000){
+            mViewpager.setCurrentItem(event.pos);
+        }else {
+            switch (event.pos){
+                //横向列表
+                case 1001:
+                    if(mViewpager.getCurrentItem()==1){
+                        mInstance1.getLayoutTag(true);
+                    }
+                    if(mViewpager.getCurrentItem()==3){
+                        mInstance3.getLayoutTag(true);
+                    }
+                    if(mViewpager.getCurrentItem()==4){
+                        mInstance4.getLayoutTag(true);
+                    }
+                    if(mViewpager.getCurrentItem()==5){
+                        mInstance5.getLayoutTag(true);
+                    }
+                    break;
+                //格子列表
+                case 1002:
+                    if(mViewpager.getCurrentItem()==1){
+                        mInstance1.getLayoutTag(false);
+                    }
+                    if(mViewpager.getCurrentItem()==3){
+                        mInstance3.getLayoutTag(false);
+                    }
+                    if(mViewpager.getCurrentItem()==4){
+                        mInstance4.getLayoutTag(false);
+                    }
+                    if(mViewpager.getCurrentItem()==5){
+                        mInstance5.getLayoutTag(false);
+                    }
+                    break;
+            }
+        }
     }
 
-    @OnClick({R.id.iv_chat,R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
+    @OnClick({R.id.iv_chat,R.id.iv_setting,R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_main:
@@ -216,6 +262,10 @@ public class PlayActivity extends BaseActivity {
                 startActivity(intentChat);
                 overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                 closeDrawLayout();
+                break;
+            case R.id.iv_setting:
+                SettingFragment settingFragment=SettingFragment.getInstance();
+                settingFragment.show(getSupportFragmentManager(),"");
                 break;
         }
     }

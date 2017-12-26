@@ -2,6 +2,7 @@ package com.cxria.Media.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.cxria.Media.adapter.ImageAdapter;
 import com.cxria.Media.adapter.RecAdapter;
 import com.cxria.Media.entity.RecInfo;
 import com.cxria.Media.netutils.NetworkUtils;
+import com.cxria.Media.utils.SpacesDoubleDecoration;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
@@ -42,6 +44,9 @@ public class ImageFragment extends BaseFragment {
     List<RecInfo> jokeInfoList=new ArrayList<>();
     private ImageAdapter mJokeAdapter;
     private LinearLayoutManager mLayoutManager;
+    boolean isVertical=true;
+    private GridLayoutManager mGridLayoutManager;
+    private SpacesDoubleDecoration mSpacesDoubleDecoration;
 
     public static ImageFragment getInstance() {
         ImageFragment recFragment = new ImageFragment();
@@ -56,11 +61,29 @@ public class ImageFragment extends BaseFragment {
     @Override
     public void initView(View inflate, Bundle savedInstanceState) {
         mLayoutManager = new LinearLayoutManager(getContext());
-        mRvJoke.setLayoutManager(mLayoutManager);
+        mGridLayoutManager = new GridLayoutManager(getContext(),2);
+        if(isVertical){
+            mRvJoke.setLayoutManager(mLayoutManager);
+        }else {
+            mRvJoke.setLayoutManager(mGridLayoutManager);
+        }
         mJokeAdapter = new ImageAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
+    }
+
+    public void getLayoutTag(boolean isTag){
+        isVertical=isTag;
+        if(isVertical){
+            mRvJoke.setLayoutManager(mLayoutManager);
+        }else {
+            mRvJoke.setLayoutManager(mGridLayoutManager);
+            mSpacesDoubleDecoration=new SpacesDoubleDecoration(0,1,1,0);
+            mRvJoke.addItemDecoration(mSpacesDoubleDecoration);
+        }
+        mJokeAdapter.setTextViewWidth(isTag);
+        mJokeAdapter.notifyDataSetChanged();
     }
 
     private void setListener() {
@@ -84,10 +107,20 @@ public class ImageFragment extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
-                if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
-                    page++;
-                    getInfo();
+                //竖向
+                if(isVertical){
+                    int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
+                    if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
+                        page++;
+                        getInfo();
+                    }
+                }else {
+                    //格子布局
+                    int lastVisibleItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+                    if(lastVisibleItemPosition==mGridLayoutManager.getItemCount()-1){
+                        page++;
+                        getInfo();
+                    }
                 }
             }
         });
