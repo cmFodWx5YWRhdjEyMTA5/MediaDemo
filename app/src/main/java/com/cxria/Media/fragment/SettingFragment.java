@@ -51,13 +51,7 @@ public class SettingFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//设置背景透明
         View inflate = inflater.inflate(R.layout.setting_frag_layout, null);
         ButterKnife.bind(this, inflate);
-//        initView(inflate);
-//        backKey();
         return inflate;
-    }
-
-    private void initView(View inflate) {
-
     }
 
     @Override
@@ -75,21 +69,6 @@ public class SettingFragment extends DialogFragment {
             window.setAttributes(params);
         }
     }
-
-    //消失
-    public void backKey() {
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    getDialog().dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
 
     @OnClick({R.id.iv_close, R.id.ll_lin, R.id.ll_gril})
     public void onClick(View view) {
