@@ -8,7 +8,7 @@
 ####　Camera的预览设置 
 
         mParams = mCamera.getParameters();
-            //前置的话，设置焦点要报错
+            //前置的话，设置焦点要报错 
             if(isBackCamera){
                 mParams.setPictureFormat(ImageFormat.JPEG);
                 mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
