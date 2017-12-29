@@ -11,7 +11,7 @@
             //前置的话，设置焦点要报错 
             if(isBackCamera){
                 mParams.setPictureFormat(ImageFormat.JPEG);
-                mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                mParams.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE); 
                 mCamera.cancelAutoFocus();
             }
             mCamera.setDisplayOrientation(0);
