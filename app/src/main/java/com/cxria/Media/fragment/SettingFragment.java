@@ -70,7 +70,7 @@ public class SettingFragment extends DialogFragment {
         }
     }
 
-    @OnClick({R.id.iv_close, R.id.ll_lin, R.id.ll_gril})
+    @OnClick({R.id.iv_close, R.id.ll_lin, R.id.ll_gril,R.id.ll_call})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
@@ -82,6 +82,9 @@ public class SettingFragment extends DialogFragment {
                 break;
             case R.id.ll_gril:
                 EventBus.getDefault().post(new EventCategrayPos(1002));
+                getDialog().dismiss();
+                break;
+            case R.id.ll_call:
                 getDialog().dismiss();
                 break;
         }

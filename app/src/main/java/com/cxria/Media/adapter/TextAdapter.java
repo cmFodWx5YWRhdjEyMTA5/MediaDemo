@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,8 @@ public class TextAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Glide.with(context).load(textInfo.getAuthor().getWeb_url()).placeholder(R.drawable.head_2).into(((MHolder) holder).mCiHead);
             ((MHolder) holder).mTvDes.setText(textInfo.getAuthor().getDesc());
             ((MHolder) holder).mTvForword.setText(textInfo.getForward());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            ((MHolder) holder).mImCover.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(context, TextDetailActivity.class);
