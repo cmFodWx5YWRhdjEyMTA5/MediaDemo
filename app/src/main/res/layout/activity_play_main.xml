@@ -20,6 +20,7 @@
                     android:id="@+id/rg"
                     android:orientation="horizontal"
                     android:weightSum="3"
+                    android:background="@color/color_write"
                     android:layout_height="56dp"
                     android:layout_alignParentBottom="true">
             <RadioButton android:id="@+id/index"

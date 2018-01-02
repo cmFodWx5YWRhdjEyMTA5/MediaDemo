@@ -68,7 +68,7 @@ public class PlayMainActivity extends BaseActivity {
                         show(1);
                         break;
                     case R.id.me:
-                        ((RadioButton) (mRg.getChildAt(1))).setChecked(true);
+                        ((RadioButton) (mRg.getChildAt(2))).setChecked(true);
                         show(2);
                         break;
                 }
