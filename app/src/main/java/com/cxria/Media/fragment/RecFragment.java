@@ -72,6 +72,7 @@ public class RecFragment extends BaseFragment {
                  android.R.color.holo_red_light, android.R.color.holo_orange_light
                 );
         mSw.setRefreshing(true);
+
     }
 
     private void setListener() {

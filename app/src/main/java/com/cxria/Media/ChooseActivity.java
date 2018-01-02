@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cxria.Media.play.PlayActivity;
+import com.cxria.Media.play.PlayMainActivity;
 import com.cxria.Media.video.MainActivity;
 
 import java.util.ArrayList;
@@ -90,7 +91,9 @@ public class ChooseActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_play:
-                Intent intent = new Intent(ChooseActivity.this, PlayActivity.class);
+//                Intent intent = new Intent(ChooseActivity.this, PlayActivity.class);
+                Intent intent = new Intent(ChooseActivity.this, PlayMainActivity.class);
+
                 startActivity(intent);
                 break;
             case R.id.tv_video:

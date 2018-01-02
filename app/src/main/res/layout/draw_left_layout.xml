@@ -177,7 +177,7 @@
             </RelativeLayout>
 
             <RelativeLayout android:layout_width="match_parent"
-                            android:layout_marginTop="50dp"
+                            android:layout_marginTop="10dp"
                             android:layout_height="match_parent">
                 <TextView android:layout_width="match_parent"
                           android:id="@+id/tv_close"
@@ -186,7 +186,7 @@
                           android:textColor="@color/color_write"
                           android:layout_marginLeft="30dp"
                           android:layout_marginRight="30dp"
-                          android:layout_marginBottom="25dp"
+                          android:layout_marginBottom="35dp"
                           android:background="@drawable/shape_close_bg"
                           android:layout_alignParentBottom="true"
                           android:gravity="center"
