@@ -35,6 +35,17 @@
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
     <!-- 声明程序使用OpenGL ES 2.0 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+
+
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
@@ -42,56 +53,66 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:name="com.cxria.media.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/media_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.cxria.media.LoadingActivity">
+        <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.cxria.media.BaseActivity">
+        <!--广电通-->
+        <activity
+            android:name="com.qq.e.ads.ADActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false" />
+
+        <activity android:name=".BaseActivity">
         </activity>
-        <activity android:name="com.cxria.media.video.VideoFileActivity">
+        <activity android:name=".video.VideoFileActivity">
         </activity>
-        <activity android:name="com.cxria.media.video.PhotoViewActivity">
+        <activity android:name=".video.PhotoViewActivity">
         </activity>
         <activity
-            android:name="com.cxria.media.video.VideoPlayActivity"
+            android:name=".video.VideoPlayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"> <!-- or android:screenOrientation="landscape" -->
         </activity>
         <activity
-            android:name="com.cxria.media.video.MainActivity"
+            android:name=".video.MainActivity"
             android:screenOrientation="landscape">
         </activity>
-        <activity android:name="com.cxria.media.ChooseActivity">
+        <activity android:name=".ChooseActivity">
         </activity>
         <activity
-            android:name="com.cxria.media.play.PlayActivity"
+            android:name=".play.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.cxria.media.play.JokeDetailActivity">
+        <activity android:name=".play.JokeDetailActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.AboutUsActivity">
+        <activity android:name=".play.AboutUsActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.ImageDetailActivity">
+        <activity android:name=".play.ImageDetailActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.MyCollectActivity">
+        <activity android:name=".play.MyCollectActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.TextDetailActivity">
+        <activity android:name=".play.TextDetailActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.HistoryTodayActivity">
+        <activity android:name=".play.HistoryTodayActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.ChatActivity">
+        <activity android:name=".play.ChatActivity">
         </activity>
-        <activity android:name="com.cxria.media.play.PlayMainActivity">
+        <activity android:name=".play.PlayMainActivity">
+        </activity>
+        <activity android:name=".play.ADVActivity">
         </activity>
     </application>
 

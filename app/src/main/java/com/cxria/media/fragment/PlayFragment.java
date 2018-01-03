@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.cxria.media.BaseFragment;
 import com.cxria.media.R;
 import com.cxria.media.entity.EventCategrayPos;
+import com.cxria.media.play.ADVActivity;
 import com.cxria.media.play.AboutUsActivity;
 import com.cxria.media.play.ChatActivity;
 import com.cxria.media.play.HistoryTodayActivity;
@@ -227,6 +228,8 @@ public class PlayFragment extends BaseFragment {
                 }
                 break;
             case R.id.iv_close:
+                Intent intent=new Intent(getContext(), ADVActivity.class);
+                startActivity(intent);
                 closeDrawLayout();
                 break;
             case R.id.rl_main:
