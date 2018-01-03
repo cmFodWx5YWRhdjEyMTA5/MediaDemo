@@ -3,6 +3,6 @@
     <dbname value="matrix" ></dbname>
     <version value="1" ></version>
     <list>
-        <mapping class="com.cxria.Media.entity.CollectInfo"></mapping>
+        <mapping class="com.cxria.media.entity.CollectInfo"></mapping>
     </list>
 </litepal>

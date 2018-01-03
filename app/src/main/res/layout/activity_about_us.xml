@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:background="@color/color_write"
     android:layout_height="match_parent"
-    tools:context="com.cxria.Media.play.AboutUsActivity">
+    tools:context="com.cxria.media.play.AboutUsActivity">
 
     <android.support.design.widget.AppBarLayout android:layout_width="match_parent"
                                                 android:fitsSystemWindows="true"
@@ -55,7 +55,6 @@
                            android:src="@mipmap/ic_back"
                            android:padding="8dp"
                            android:layout_height="50dp"/>
-
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>

@@ -5,7 +5,7 @@
                                          xmlns:yk="http://schemas.android.com/apk/res-auto"
                                          android:background="@color/color_write"
                                          >
-    <com.cxria.Media.views.WaterLoadView
+    <com.cxria.media.views.WaterLoadView
         android:layout_width="match_parent"
         android:id="@+id/water_load"
         android:layout_height="100dp"
@@ -13,7 +13,7 @@
         yk:circleTop="85"
         yk:circleSmallRadio="8"
         yk:loadTime="1000" />
-    <com.cxria.Media.views.RetailMeNotLayout
+    <com.cxria.media.views.RetailMeNotLayout
         android:id="@+id/l_retail_me_not"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

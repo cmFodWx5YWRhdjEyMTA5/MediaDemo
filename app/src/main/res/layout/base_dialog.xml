@@ -6,7 +6,7 @@
     android:background="@drawable/shape_color_bg"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.cxria.Media.BaseActivity">
+    tools:context="com.cxria.media.BaseActivity">
     <TextView android:layout_width="wrap_content"
               android:text="滤镜选择："
               android:textColor="@color/colorAccent"

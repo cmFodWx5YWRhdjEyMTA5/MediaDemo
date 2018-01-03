@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context="com.cxria.Media.video.MainActivity">
+    tools:context="com.cxria.media.video.MainActivity">
     <SurfaceView android:layout_width="match_parent"
                  android:id="@+id/surfaceview"
                  android:layout_centerInParent="true"

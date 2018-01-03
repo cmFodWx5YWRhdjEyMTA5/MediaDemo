@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:background="@color/color_write"
     android:layout_height="match_parent"
-    tools:context="com.cxria.Media.play.JokeDetailActivity">
+    tools:context="com.cxria.media.play.JokeDetailActivity">
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="50dp">

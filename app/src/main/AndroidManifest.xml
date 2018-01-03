@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.cxria.Media"> <!-- 声明sdk版本 -->
+          package="com.cxria.media"> <!-- 声明sdk版本 -->
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="22"/>
@@ -42,56 +42,56 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:name=".MyApplication"
+        android:name="com.cxria.media.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/media_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoadingActivity">
+        <activity android:name="com.cxria.media.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity">
+        <activity android:name="com.cxria.media.BaseActivity">
         </activity>
-        <activity android:name=".video.VideoFileActivity">
+        <activity android:name="com.cxria.media.video.VideoFileActivity">
         </activity>
-        <activity android:name=".video.PhotoViewActivity">
+        <activity android:name="com.cxria.media.video.PhotoViewActivity">
         </activity>
         <activity
-            android:name=".video.VideoPlayActivity"
+            android:name="com.cxria.media.video.VideoPlayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"> <!-- or android:screenOrientation="landscape" -->
         </activity>
         <activity
-            android:name=".video.MainActivity"
+            android:name="com.cxria.media.video.MainActivity"
             android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".ChooseActivity">
+        <activity android:name="com.cxria.media.ChooseActivity">
         </activity>
         <activity
-            android:name=".play.PlayActivity"
+            android:name="com.cxria.media.play.PlayActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".play.JokeDetailActivity">
+        <activity android:name="com.cxria.media.play.JokeDetailActivity">
         </activity>
-        <activity android:name=".play.AboutUsActivity">
+        <activity android:name="com.cxria.media.play.AboutUsActivity">
         </activity>
-        <activity android:name=".play.ImageDetailActivity">
+        <activity android:name="com.cxria.media.play.ImageDetailActivity">
         </activity>
-        <activity android:name=".play.MyCollectActivity">
+        <activity android:name="com.cxria.media.play.MyCollectActivity">
         </activity>
-        <activity android:name=".play.TextDetailActivity">
+        <activity android:name="com.cxria.media.play.TextDetailActivity">
         </activity>
-        <activity android:name=".play.HistoryTodayActivity">
+        <activity android:name="com.cxria.media.play.HistoryTodayActivity">
         </activity>
-        <activity android:name=".play.ChatActivity">
+        <activity android:name="com.cxria.media.play.ChatActivity">
         </activity>
-        <activity android:name=".play.PlayMainActivity">
+        <activity android:name="com.cxria.media.play.PlayMainActivity">
         </activity>
     </application>
 
