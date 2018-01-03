@@ -6,12 +6,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cxria.Media.BaseActivity;
 import com.cxria.Media.BaseFragment;
 import com.cxria.Media.R;
 import com.cxria.Media.adapter.CollectAdapter;
@@ -24,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MyCollectFragment extends BaseFragment {
@@ -40,10 +43,14 @@ public class MyCollectFragment extends BaseFragment {
     CollectAdapter mCollectAdapter;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
+    @BindView(R.id.default_bg)
+    RelativeLayout mDefaultBg;
+    private List<CollectInfo> mCollectInfoList;
 
-    public static MyCollectFragment getInstance(){
+    public static MyCollectFragment getInstance() {
         return new MyCollectFragment();
     }
+
     @Override
     public int getLayout() {
         return R.layout.activity_my_collect;
@@ -51,17 +58,32 @@ public class MyCollectFragment extends BaseFragment {
 
     @Override
     public void initView(View inflate, Bundle savedInstanceState) {
-        List<CollectInfo> collectInfoList = DataSupport.findAll(CollectInfo.class);
-        Collections.reverse(collectInfoList);
+        mCollectInfoList = DataSupport.findAll(CollectInfo.class);
+        Collections.reverse(mCollectInfoList);
         mIvBack.setVisibility(View.GONE);
+        if(mCollectInfoList.size()==0){
+            mDefaultBg.setVisibility(View.VISIBLE);
+        }else {
+            mDefaultBg.setVisibility(View.GONE);
+        }
         mLayoutManager = new GridLayoutManager(getContext(), 2);
         mRvCollect.setLayoutManager(mLayoutManager);
-        mCollectAdapter = new CollectAdapter(getContext(), collectInfoList);
+        mCollectAdapter = new CollectAdapter(getContext(), mCollectInfoList);
         mRvCollect.setAdapter(mCollectAdapter);
         mRvCollect.addItemDecoration(new SpacesDoubleDecoration(0, 4, 8, 16));
+
         mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mCollectInfoList.clear();
+                mCollectInfoList = DataSupport.findAll(CollectInfo.class);
+                if(mCollectInfoList.size()==0){
+                    mDefaultBg.setVisibility(View.VISIBLE);
+                }else {
+                    mDefaultBg.setVisibility(View.GONE);
+                }
+                Collections.reverse(mCollectInfoList);
+                mCollectAdapter.getInfo(mCollectInfoList);
                 mSw.setRefreshing(false);
             }
         });
@@ -87,4 +109,5 @@ public class MyCollectFragment extends BaseFragment {
                     }
                 }).show();
     }
+
 }

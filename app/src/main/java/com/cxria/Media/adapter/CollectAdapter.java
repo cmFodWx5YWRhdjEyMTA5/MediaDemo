@@ -51,6 +51,11 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.jokeInfoList = jokeInfoList;
     }
 
+    public void getInfo(List<CollectInfo> jokeInfoList){
+        this.jokeInfoList=jokeInfoList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.collect_layout_item, null);

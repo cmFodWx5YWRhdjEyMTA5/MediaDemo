@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
+import android.view.View;
+import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -34,6 +38,12 @@ public class PlayMainActivity extends BaseActivity {
 
     @Override
     public int getLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Window window = getWindow();
+            window.getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
         return R.layout.activity_play_main;
     }
 
