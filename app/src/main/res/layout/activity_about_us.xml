@@ -52,7 +52,7 @@
                                                android:title="关于我们">
                 <ImageView android:layout_width="50dp"
                            android:id="@+id/iv_back"
-                           android:src="@mipmap/ic_back"
+                           android:src="@mipmap/joke_back"
                            android:padding="8dp"
                            android:layout_height="50dp"/>
 

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cxria.media.play.PlayMainActivity;
+import com.cxria.media.utils.ActivityUtils;
 import com.cxria.media.video.MainActivity;
 
 import java.util.ArrayList;
@@ -28,10 +29,13 @@ public class ChooseActivity extends BaseActivity {
     TextView mTvPlay;
     @BindView(R.id.tv_video)
     TextView mTvVideo;
+    @BindView(R.id.tv_wanandroid)
+    TextView mTvWanAndroid;
     @BindView(R.id.ll_bg)
     LinearLayout mLlBg;
     private Random mRandom;
     private List<Integer> mMImages;
+    private int numCount=0;
 
     @Override
     public int getLayout() {
@@ -85,13 +89,11 @@ public class ChooseActivity extends BaseActivity {
         startAmim();
     }
 
-    @OnClick({R.id.tv_play, R.id.tv_video,R.id.iv_back})
+    @OnClick({R.id.tv_play, R.id.tv_video,R.id.iv_back,R.id.tv_wanandroid})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_play:
-//                Intent intent = new Intent(ChooseActivity.this, PlayActivity.class);
                 Intent intent = new Intent(ChooseActivity.this, PlayMainActivity.class);
-
                 startActivity(intent);
                 break;
             case R.id.tv_video:
@@ -101,6 +103,18 @@ public class ChooseActivity extends BaseActivity {
             case R.id.iv_back:
                 int ran = mRandom.nextInt(8);
                 mIvBack.setBackgroundResource(mMImages.get(ran));
+                //是否显示玩Android按钮
+                numCount++;
+                if(numCount%3==0){
+                    if(mTvWanAndroid.getVisibility()==View.VISIBLE){
+                        mTvWanAndroid.setVisibility(View.GONE);
+                    }else {
+                        mTvWanAndroid.setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
+            case R.id.tv_wanandroid:
+                ActivityUtils.startWanActivity(this);
                 break;
         }
     }

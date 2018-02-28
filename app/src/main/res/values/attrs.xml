@@ -19,4 +19,29 @@
         <attr name="scaleItemCount" format="integer"></attr>
 
     </declare-styleable>
+
+    <!--leafLoadView-->
+    <attr name="backgroundColor" format="color" />
+    <attr name="borderColor" format="color" />
+    <attr name="seekColor" format="color" />
+    <attr name="circleLeftStyle" format="boolean" />
+    <attr name="rotationSpeed" format="integer" />
+    <attr name="circleWidth" format="integer" />
+
+    <attr name="lineColor" format="color" />
+    <attr name="lineWidth" format="integer" />
+    <attr name="lineDuration" format="integer" />
+    <attr name="circleDuration" format="integer" />
+    <attr name="circleCenterColor" format="color"/>
+    <attr name="circleRadio" format="integer" />
+
+    <declare-styleable name="BMoveView">
+        <attr name="circleColor" />
+        <attr name="circleCenterColor" />
+        <attr name="lineColor" />
+        <attr name="lineWidth" />
+        <attr name="circleRadio"/>
+        <attr name="lineDuration" />
+        <attr name="circleDuration" />
+    </declare-styleable>
 </resources>

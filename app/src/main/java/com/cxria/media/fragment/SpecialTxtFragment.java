@@ -219,7 +219,9 @@ public class SpecialTxtFragment extends BaseFragment {
                     page++;
                     Log.i("url", finalUrlDate);
                     if(page>=urlList.size()/2){
-                        mAdapter.notifyDataSetChanged();
+                        if(mAdapter!=null){
+                            mAdapter.notifyDataSetChanged();
+                        }
                         return;
                     }else {
                         getAllMsg();

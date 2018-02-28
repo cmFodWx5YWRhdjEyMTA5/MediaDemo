@@ -51,8 +51,8 @@ public abstract class BaseCenterDialog extends DialogFragment {
             params.dimAmount =0f;
             //修改gravity
             params.gravity = Gravity.CENTER;
-            params.width =width*2/5;
-            params.height = height*4/7;
+            params.width =width*4/5;
+            params.height = height*3/7;
             window.setAttributes(params);
         }
     }

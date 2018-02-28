@@ -34,4 +34,10 @@
     <color name="color_ededed">#494949</color>
     <color name="color_63000000">#63000000</color>
     <color name="color_ff01bb">#ff01bb</color>
+
+    <color name="color_ff4081">#FF4081</color>
+    <color name="color_2e4eef">#ea2e4eef</color>
+    <color name="color_fd4040">#fd4040</color>
+    <color name="color_ff2323">#ff2323</color>
+    <color name="color_30f209">#30f209</color>
 </resources>

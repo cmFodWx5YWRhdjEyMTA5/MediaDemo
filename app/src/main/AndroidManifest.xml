@@ -111,6 +111,16 @@
         </activity>
         <activity android:name=".play.ADVActivity">
         </activity>
+        <!--wan android-->
+        <activity android:name=".wanandroid.MainActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".wanandroid.KnowListActivity"/>
+        <activity android:name=".wanandroid.LoginActivity"/>
+        <activity android:name=".wanandroid.MeActivity"/>
+        <activity android:name=".wanandroid.SearchActivity"/>
+        <activity android:name=".wanandroid.SplashActivity"/>
+        <activity android:name=".wanandroid.CollectActivity"/>
+        <activity android:name=".wanandroid.DetailActivity"/>
     </application>
 
 </manifest>
