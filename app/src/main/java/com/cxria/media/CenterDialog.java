@@ -46,7 +46,6 @@ public class CenterDialog extends BaseCenterDialog {
                 sector=position;
                 mLvAdapter.notifyDataSetChanged();
                 getDialog().dismiss();
-
             }
         });
     }
