@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +29,6 @@ import com.cxria.media.video.VideoPlayActivity;
 
 import org.litepal.crud.DataSupport;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,34 +37,85 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by yukun on 17-11-20.
+ * Created by Beck on 2018/4/14.
  */
 
-public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EyeRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<EyesInfo> eyesInfoList;
     boolean isFist = false;
-    boolean isVertical=true;
-    public VideoAdapter(Context context, List<EyesInfo> eyesInfoList) {
+    public EyeRecAdapter(Context context, List<EyesInfo> eyesInfoList) {
         this.context = context;
         this.eyesInfoList = eyesInfoList;
-    }
-
-    public void setTextViewWidth( boolean isVertical){
-        this.isVertical=isVertical;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(context).inflate(R.layout.rec_layout_item, null);
-        return new MHolder(view);
+        if (viewType == 1) {
+            view = LayoutInflater.from(context).inflate(R.layout.rec_header_layout, null);
+            return new HeaderHolder(view);
 
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.rec_layout_item, null);
+            return new MHolder(view);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position==0){
+            return 1;
+        }else {
+            return 2;
+        }
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof MHolder){
+        if(holder instanceof HeaderHolder){
+            if (isFist || eyesInfoList.size() == 0) {
+                return;
+            }
+            final List<EyesInfo> list = new ArrayList<>();
+            list.add(eyesInfoList.get(3));
+            list.add(eyesInfoList.get(5));
+            list.add(eyesInfoList.get(7));
+            list.add(eyesInfoList.get(9));
+            list.add(eyesInfoList.get(10));
+
+            ((HeaderHolder) holder).mConBanner.setPages(
+                    new CBViewHolderCreator<LocalImageHolderView>() {
+                        @Override
+                        public LocalImageHolderView createHolder() {
+                            return new LocalImageHolderView();
+                        }
+                    }, list)
+                    .startTurning(3000)
+                    //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                    .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicatored})
+                    //设置指示器的方向
+                    .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
+            ;
+            ((HeaderHolder) holder).mConBanner.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Intent intent = new Intent(context, VideoPlayActivity.class);
+                    intent.putExtra("imagepath", list.get(position).getData().getPlayUrl() + "#" +
+                            list.get(position).getData().getCover().getDetail() + "#" +
+                            list.get(position).getData().getTitle());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+            isFist = true;
+
+            ((HeaderHolder) holder).mTvVideo.setOnClickListener(new Listener());
+            ((HeaderHolder) holder).mTvImage.setOnClickListener(new Listener());
+            ((HeaderHolder) holder).mTvJoke.setOnClickListener(new Listener());
+            ((HeaderHolder) holder).mTvTxt.setOnClickListener(new Listener());
+            ((HeaderHolder) holder).mTvEssay.setOnClickListener(new Listener());
+        }else if(holder instanceof MHolder){
             final EyesInfo eyesInfo = eyesInfoList.get(position);
             ((MHolder) holder).mTvName.setText(eyesInfo.getData().getSlogan());
             ((MHolder) holder).mTvTitle.setText(eyesInfo.getData().getDescription());
@@ -76,7 +127,7 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 public void onClick(View v) {
 
                     Intent intent = new Intent(context, VideoPlayActivity.class);
-                    intent.putExtra("imagepath", eyesInfo.getData().getPlayUrl() + "#" + eyesInfo.getData().getCover(). getDetail() + "#" + eyesInfo.getData().getTitle());
+                    intent.putExtra("imagepath", eyesInfo.getData().getPlayUrl() + "#" + eyesInfo.getData().getCover().getDetail() + "#" + eyesInfo.getData().getTitle());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if(Build.VERSION.SDK_INT>Build.VERSION_CODES.KITKAT_WATCH){
                         context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,((MHolder) holder).mImCover,"shareView").toBundle());
@@ -84,6 +135,7 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         context.startActivity(intent);
                         ((Activity)context).overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
                     }
+
                 }
             });
 
@@ -93,6 +145,7 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     shareSend(context, eyesInfo.getData().getWebUrl().getForWeibo());
                 }
             });
+
             //加入收藏
             ((MHolder) holder).mImCollect.setOnClickListener(new View.OnClickListener() {
                 @Override

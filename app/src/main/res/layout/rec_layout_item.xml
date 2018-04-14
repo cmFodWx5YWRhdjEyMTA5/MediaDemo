@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
+              android:id="@+id/ll"
               android:background="@color/color_write"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/color_write"
+        android:layout_height="wrap_content">
+
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="50dp">
         <de.hdodenhof.circleimageview.CircleImageView android:layout_width="40dp"
@@ -86,7 +93,7 @@
                    android:layout_height="25dp"/>
         <TextView android:layout_width="wrap_content"
                   android:id="@+id/tv_play_times"
-                  android:text="6"
+                  android:text=""
                   android:layout_toRightOf="@id/iv_play"
                   android:paddingRight="10dp"
                   android:layout_centerVertical="true"
@@ -98,14 +105,15 @@
                   android:textSize="16sp"
                   android:paddingLeft="10dp"
                   android:layout_height="20dp"/>
-        <ImageView android:layout_width="35dp"
-                   android:padding="6dp"
-                   android:id="@+id/iv_share"
-                   android:src="@mipmap/skip"
-                   android:layout_centerVertical="true"
-                   android:layout_marginRight="5dp"
-                   android:layout_alignParentRight="true"
-                   android:layout_height="35dp"/>
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:padding="4dp"
+            android:src="@mipmap/skip" />
         <ImageView android:layout_width="35dp"
                    android:padding="2dp"
                    android:id="@+id/iv_collect"
@@ -118,4 +126,5 @@
     <View android:layout_width="match_parent"
           android:background="@color/color_eaeaea"
           android:layout_height="5dp"/>
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

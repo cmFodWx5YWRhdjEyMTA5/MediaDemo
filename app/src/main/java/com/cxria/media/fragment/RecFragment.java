@@ -4,15 +4,20 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cxria.media.BaseFragment;
 import com.cxria.media.R;
+import com.cxria.media.adapter.EyeRecAdapter;
 import com.cxria.media.adapter.RecAdapter;
 import com.cxria.media.entity.EventCategrayPos;
+import com.cxria.media.entity.EyesInfo;
 import com.cxria.media.entity.RecInfo;
 import com.cxria.media.netutils.NetworkUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,14 +36,13 @@ import okhttp3.Call;
  */
 
 public class RecFragment extends BaseFragment {
-    String url = "http://lf.snssdk.com/neihan/stream/mix/v1/?content_type=-104";
-    int page = 1;
+    String url = "http://baobab.kaiyanapp.com/api/v4/tabs/selected";
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-    List<RecInfo> jokeInfoList=new ArrayList<>();
-    private RecAdapter mJokeAdapter;
+    List<EyesInfo> eyesInfos=new ArrayList<>();
+    private EyeRecAdapter mJokeAdapter;
     private LinearLayoutManager mLayoutManager;
 
     public static RecFragment getInstance() {
@@ -55,7 +59,7 @@ public class RecFragment extends BaseFragment {
     public void initView(View inflate, Bundle savedInstanceState) {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRvJoke.setLayoutManager(mLayoutManager);
-        mJokeAdapter = new RecAdapter(getContext(),jokeInfoList);
+        mJokeAdapter = new EyeRecAdapter(getContext(),eyesInfos);
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
@@ -70,9 +74,9 @@ public class RecFragment extends BaseFragment {
         mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                jokeInfoList.clear();
+                url = "http://baobab.kaiyanapp.com/api/v4/tabs/selected";
+                eyesInfos.clear();
                 mJokeAdapter.notifyDataSetChanged();
-                page=1;
                 getInfo();
                 mSw.setRefreshing(false);
             }
@@ -89,11 +93,11 @@ public class RecFragment extends BaseFragment {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
                 if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
-                    page++;
                     getInfo();
                 }
             }
         });
+
         mJokeAdapter.getCategroyPos(new RecAdapter.CategroyCallBack() {
             @Override
             public void choosePos(int pos) {
@@ -113,38 +117,23 @@ public class RecFragment extends BaseFragment {
             @Override
             public void onResponse(String response, int id) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject dataArr = jsonObject.optJSONObject("data");
-                    JSONArray data = dataArr.optJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        RecInfo recInfo=new RecInfo();
-                        JSONObject jsonObject1 = data.optJSONObject(i);
-                        JSONObject group = jsonObject1.optJSONObject("group");
-                        if(!group.optString("text").equals("")){
-                            recInfo.setText(group.optString("text"));
-                        }else {
-                            recInfo.setText("不知道取个啥名！");
+                    Gson gson=new Gson();
+                    JSONObject jsonObject=new JSONObject(response);
+                    JSONArray itemList = jsonObject.optJSONArray("itemList");
+                    List<EyesInfo> jokeList = gson.fromJson(itemList.toString(), new TypeToken<List<EyesInfo>>(){}.getType());
+                    eyesInfos.addAll(jokeList);
+                    for (int i = 0; i < jokeList.size(); i++) {
+                        if(!jokeList.get(i).getType().equals("video")){
+                            eyesInfos.remove(jokeList.get(i));
                         }
-                        JSONObject origin_video = group.optJSONObject("origin_video");
-                        JSONArray origin_video_arr = origin_video.optJSONArray("url_list");
-
-                        recInfo.setPlay_url(origin_video_arr.optJSONObject(0).optString("url"));
-                        recInfo.setShare_url(group.optString("share_url"));
-                        recInfo.setCreate_time(group.optString("create_time"));
-                        recInfo.setPlay_time(group.optLong("play_count"));
-                        JSONObject user = group.optJSONObject("user");
-                        recInfo.setUser_name(user.optString("name"));
-                        recInfo.setHeader(user.optString("avatar_url"));
-
-                        JSONObject covers = group.optJSONObject("large_cover");
-                        JSONArray cover_url = covers.optJSONArray("url_list");
-                        recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
-                        jokeInfoList.add(recInfo);
+                    }
+                    if(jsonObject.optString("nextPageUrl")!=null&&!jsonObject.optString("nextPageUrl").equals("")){
+                        url=jsonObject.optString("nextPageUrl");
                     }
                     mJokeAdapter.notifyDataSetChanged();
                     mSw.setRefreshing(false);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

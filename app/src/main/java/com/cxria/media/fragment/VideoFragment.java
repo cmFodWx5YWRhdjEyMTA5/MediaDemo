@@ -11,9 +11,12 @@ import android.widget.Toast;
 import com.cxria.media.BaseFragment;
 import com.cxria.media.R;
 import com.cxria.media.adapter.VideoAdapter;
+import com.cxria.media.entity.EyesInfo;
 import com.cxria.media.entity.RecInfo;
 import com.cxria.media.netutils.NetworkUtils;
 import com.cxria.media.utils.SpacesDoubleDecoration;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
@@ -31,13 +34,13 @@ import okhttp3.Call;
  */
 
 public class VideoFragment extends BaseFragment {
-    String url = "http://lf.snssdk.com/neihan/stream/mix/v1/?content_type=-104";
+    String url = "http://baobab.kaiyanapp.com/api/v4/tabs/selected";
     int page = 1;
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-    List<RecInfo> jokeInfoList=new ArrayList<>();
+    List<EyesInfo> eyesInfos=new ArrayList<>();
     private VideoAdapter mJokeAdapter;
     private LinearLayoutManager mLayoutManager;
     private boolean isVertical=true;
@@ -63,7 +66,7 @@ public class VideoFragment extends BaseFragment {
         }else {
             mRvJoke.setLayoutManager(mGridLayoutManager);
         }
-        mJokeAdapter = new VideoAdapter(getContext(),jokeInfoList);
+        mJokeAdapter = new VideoAdapter(getContext(),eyesInfos);
         mRvJoke.setAdapter(mJokeAdapter);
         getInfo();
         setListener();
@@ -86,9 +89,10 @@ public class VideoFragment extends BaseFragment {
         mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                jokeInfoList.clear();
+                eyesInfos.clear();
+                url = "http://baobab.kaiyanapp.com/api/v4/tabs/selected";
                 mJokeAdapter.notifyDataSetChanged();
-                page=1;
+//                page=1;
                 getInfo();
                 mSw.setRefreshing(false);
             }
@@ -133,42 +137,26 @@ public class VideoFragment extends BaseFragment {
 
             @Override
             public void onResponse(String response, int id) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject dataArr = jsonObject.optJSONObject("data");
-                    JSONArray data = dataArr.optJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        RecInfo recInfo=new RecInfo();
-                        JSONObject jsonObject1 = data.optJSONObject(i);
-                        JSONObject group = jsonObject1.optJSONObject("group");
-                        if(group.optString("text")!=null){
-                            recInfo.setText(group.optString("text"));
-                        }else {
-                            recInfo.setText("不知道取个啥名！");
+                    try {
+                        Gson gson=new Gson();
+                        JSONObject jsonObject=new JSONObject(response);
+                        JSONArray itemList = jsonObject.optJSONArray("itemList");
+                        List<EyesInfo> jokeList = gson.fromJson(itemList.toString(), new TypeToken<List<EyesInfo>>(){}.getType());
+                        eyesInfos.addAll(jokeList);
+                        for (int i = 0; i < jokeList.size(); i++) {
+                            if(!jokeList.get(i).getType().equals("video")){
+                                eyesInfos.remove(jokeList.get(i));
+                            }
                         }
-                        JSONObject origin_video = group.optJSONObject("origin_video");
-                        JSONArray origin_video_arr = origin_video.optJSONArray("url_list");
+                        if(jsonObject.optString("nextPageUrl")!=null&&!jsonObject.optString("nextPageUrl").equals("")){
+                            url=jsonObject.optString("nextPageUrl");
+                        }
+                        mJokeAdapter.notifyDataSetChanged();
+                        mSw.setRefreshing(false);
 
-                        recInfo.setPlay_url(origin_video_arr.optJSONObject(0).optString("url"));
-
-                        recInfo.setShare_url(group.optString("share_url"));
-                        recInfo.setCreate_time(group.optString("create_time"));
-                        recInfo.setPlay_time(group.optLong("play_count"));
-
-                        JSONObject user = group.optJSONObject("user");
-                        recInfo.setUser_name(user.optString("name"));
-                        recInfo.setHeader(user.optString("avatar_url"));
-
-                        JSONObject covers = group.optJSONObject("large_cover");
-                        JSONArray cover_url = covers.optJSONArray("url_list");
-                        recInfo.setCover(cover_url.optJSONObject(0).optString("url"));
-                        jokeInfoList.add(recInfo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    mJokeAdapter.notifyDataSetChanged();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
