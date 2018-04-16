@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MediaDemo.iml" filepath="$PROJECT_DIR$/MediaDemo.iml" />
-      <module fileurl="file://D:\project\MediaDemo\MediaDemo.iml" filepath="D:\project\MediaDemo\MediaDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\project\MediaDemo\app\app.iml" filepath="D:\project\MediaDemo\app\app.iml" />
-      <module fileurl="file://D:\project\MediaDemo\uynxinDemo.iml" filepath="D:\project\MediaDemo\uynxinDemo.iml" />
     </modules>
   </component>
 </project>

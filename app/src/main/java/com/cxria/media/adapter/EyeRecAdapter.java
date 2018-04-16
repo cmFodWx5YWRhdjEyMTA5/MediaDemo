@@ -79,10 +79,15 @@ public class EyeRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
             final List<EyesInfo> list = new ArrayList<>();
             list.add(eyesInfoList.get(3));
-            list.add(eyesInfoList.get(5));
-            list.add(eyesInfoList.get(7));
-            list.add(eyesInfoList.get(9));
-            list.add(eyesInfoList.get(10));
+            if(eyesInfoList.get(5)!=null){
+                list.add(eyesInfoList.get(5));
+            }
+            if(eyesInfoList.get(5)!=null){
+                list.add(eyesInfoList.get(7));
+            }
+            if(eyesInfoList.get(8)!=null){
+                list.add(eyesInfoList.get(8));
+            }
 
             ((HeaderHolder) holder).mConBanner.setPages(
                     new CBViewHolderCreator<LocalImageHolderView>() {
