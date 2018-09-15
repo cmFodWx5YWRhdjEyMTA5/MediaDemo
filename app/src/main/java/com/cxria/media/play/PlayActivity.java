@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.cxria.media.BaseActivity;
 import com.cxria.media.R;
 import com.cxria.media.entity.EventCategrayPos;
@@ -207,64 +208,64 @@ public class PlayActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.iv_chat,R.id.iv_setting,R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie, R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
+    @OnClick({R.id.iv_chat, R.id.iv_setting,R.id.iv_main,R.id.head, R.id.iv_close,R.id.rl_collect,R.id.rl_main, R.id.rl_movie,
+            R.id.rl_change_modul, R.id.rl_me, R.id.tv_close})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_main:
-                if (!mDrawlayout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawlayout.openDrawer(Gravity.LEFT);
-                }
-                break;
-            case R.id.iv_close:
-                closeDrawLayout();
-                break;
-            case R.id.rl_main:
-                mViewpager.setCurrentItem(0);
-                closeDrawLayout();
-                break;
-            case R.id.rl_movie:
-                //推荐
-                Intent intentHis=new Intent(this,HistoryTodayActivity.class);
-                startActivity(intentHis);
-                overridePendingTransition(R.anim.rotate,0);
-                closeDrawLayout();
-                break;
-            case R.id.rl_change_modul:
-                setNightMode();
-                closeDrawLayout();
-                break;
-            case R.id.rl_collect:
-                Intent intentCol=new Intent(this,MyCollectActivity.class);
-                startActivity(intentCol);
-                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
-                closeDrawLayout();
-                break;
-            case R.id.rl_me:
-                Intent intentAbu=new Intent(this,AboutUsActivity.class);
-                startActivity(intentAbu);
-                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
-                closeDrawLayout();
-                break;
-            case R.id.tv_close:
-                closeDrawLayout();
-                finish();
-                break;
-            case R.id.head:
-                Intent intentAbus=new Intent(this,AboutUsActivity.class);
-                startActivity(intentAbus);
-                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
-                closeDrawLayout();
-                break;
-            case R.id.iv_chat:
-                Intent intentChat=new Intent(this,ChatActivity.class);
-                startActivity(intentChat);
-                overridePendingTransition(R.anim.rotate,R.anim.rotate_out);
-                closeDrawLayout();
-                break;
-            case R.id.iv_setting:
-                SettingFragment settingFragment=SettingFragment.getInstance();
-                settingFragment.show(getSupportFragmentManager(),"");
-                break;
+        int i = view.getId();
+        if (i == R.id.iv_main) {
+            if (!mDrawlayout.isDrawerOpen(Gravity.LEFT)) {
+                mDrawlayout.openDrawer(Gravity.LEFT);
+            }
+
+        } else if (i == R.id.iv_close) {
+            closeDrawLayout();
+
+        } else if (i == R.id.rl_main) {
+            closeDrawLayout();
+            mViewpager.setCurrentItem(0);
+
+        } else if (i == R.id.rl_movie) {//推荐
+            closeDrawLayout();
+            Intent intentHis = new Intent(this, HistoryTodayActivity.class);
+            startActivity(intentHis);
+            overridePendingTransition(R.anim.rotate, 0);
+
+        } else if (i == R.id.rl_change_modul) {
+            closeDrawLayout();
+            setNightMode();
+
+        } else if (i == R.id.rl_collect) {
+            closeDrawLayout();
+            Intent intentCol = new Intent(this, MyCollectActivity.class);
+            startActivity(intentCol);
+            overridePendingTransition(R.anim.rotate, R.anim.rotate_out);
+
+        } else if (i == R.id.rl_me) {
+            closeDrawLayout();
+            Intent intentAbu = new Intent(this, AboutUsActivity.class);
+            startActivity(intentAbu);
+            overridePendingTransition(R.anim.rotate, R.anim.rotate_out);
+
+        } else if (i == R.id.tv_close) {
+            closeDrawLayout();
+            finish();
+
+        } else if (i == R.id.head) {
+            closeDrawLayout();
+            Intent intentAbus = new Intent(this, AboutUsActivity.class);
+            startActivity(intentAbus);
+            overridePendingTransition(R.anim.rotate, R.anim.rotate_out);
+
+        } else if (i == R.id.iv_chat) {
+            closeDrawLayout();
+            Intent intentChat = new Intent(this, ChatActivity.class);
+            startActivity(intentChat);
+            overridePendingTransition(R.anim.rotate, R.anim.rotate_out);
+
+        } else if (i == R.id.iv_setting) {
+            SettingFragment settingFragment = SettingFragment.getInstance();
+            settingFragment.show(getSupportFragmentManager(), "");
+
         }
     }
 
@@ -303,24 +304,24 @@ public class PlayActivity extends BaseActivity {
     private void closeDrawLayout() {
         mDrawlayout.closeDrawer(Gravity.LEFT);
     }
-    //双击退出
-    private long firstTime=0;
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case KeyEvent.KEYCODE_BACK:
-                long secondTime=System.currentTimeMillis();
-
-                if(secondTime-firstTime>2000){
-                    Toast.makeText(PlayActivity.this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
-                    firstTime=secondTime;
-                    return true;
-                }else{
-                   finish();
-                }
-                break;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
+//    //双击退出
+//    private long firstTime=0;
+//
+//    @Override
+//    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        switch (keyCode){
+//            case KeyEvent.KEYCODE_BACK:
+//                long secondTime=System.currentTimeMillis();
+//
+//                if(secondTime-firstTime>2000){
+//                    Toast.makeText(PlayActivity.this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
+//                    firstTime=secondTime;
+//                    return true;
+//                }else{
+//                   finish();
+//                }
+//                break;
+//        }
+//        return super.onKeyUp(keyCode, event);
+//    }
 }

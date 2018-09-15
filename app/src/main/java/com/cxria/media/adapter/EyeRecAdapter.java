@@ -208,17 +208,14 @@ public class EyeRecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 case R.id.tv_video:
                     mCategroyCallBack.choosePos(1);
                     break;
-                case R.id.tv_txt:
+                case R.id.tv_image:
                     mCategroyCallBack.choosePos(2);
                     break;
-                case R.id.tv_image:
+                case R.id.tv_joke:
                     mCategroyCallBack.choosePos(3);
                     break;
-                case R.id.tv_joke:
-                    mCategroyCallBack.choosePos(4);
-                    break;
                 case R.id.tv_essay:
-                    mCategroyCallBack.choosePos(5);
+                    mCategroyCallBack.choosePos(4);
                     break;
             }
         }

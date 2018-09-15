@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import okhttp3.Call;
@@ -32,8 +33,8 @@ import okhttp3.Call;
  */
 
 public class ImageFragment extends BaseFragment {
-    String url="https://www.apiopen.top/satinGodApi";
-    int page = 1;
+    String url="https://www.apiopen.top/meituApi";
+    int page = 50;
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
@@ -87,9 +88,11 @@ public class ImageFragment extends BaseFragment {
         mSw.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Random random=new Random();
+                int nextInt = random.nextInt(30);
                 jokeInfoList.clear();
                 mJokeAdapter.notifyDataSetChanged();
-                page=1;
+                page=nextInt;
                 getInfo();
                 mSw.setRefreshing(false);
             }
@@ -124,9 +127,11 @@ public class ImageFragment extends BaseFragment {
     }
 
     private void getInfo() {
+        Random random=new Random();
+        int nextInt = random.nextInt(25);
         NetworkUtils.networkGet(url)
                 .addParams("type",3+"")
-                .addParams("page",page+"")
+                .addParams("page",nextInt+"")
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -145,7 +150,7 @@ public class ImageFragment extends BaseFragment {
                         jokeInfoList.addAll(imageInfos);
                         mJokeAdapter.notifyDataSetChanged();
                     }else {
-                        Toast.makeText(getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
                     }
 
 

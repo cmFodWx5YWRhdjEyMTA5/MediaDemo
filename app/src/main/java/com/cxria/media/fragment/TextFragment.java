@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.cxria.media.BaseFragment;
 import com.cxria.media.R;
 import com.cxria.media.adapter.TextAdapter;
+import com.cxria.media.entity.NewsInfo;
 import com.cxria.media.entity.TextInfo;
 import com.cxria.media.netutils.NetworkUtils;
 import com.cxria.media.utils.SpacesDoubleDecoration;
@@ -36,19 +37,14 @@ import okhttp3.Call;
  */
 
 public class TextFragment extends BaseFragment {
-    String url = "http://v3.wufazhuce.com:8000/api/onelist/idlist/?channel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android 或 http://v3.wufazhuce.com:8000/api/onelist/idlist/?channel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
-    int page = 0;
+    String url="https://www.apiopen.top/journalismApi";
     @BindView(R.id.rv_joke)
     RecyclerView mRvJoke;
     @BindView(R.id.sw)
     SwipeRefreshLayout mSw;
-    List<TextInfo> jokeInfoList=new ArrayList<>();
+    List<NewsInfo> jokeInfoList=new ArrayList<>();
     private TextAdapter mTextAdapter;
-    private long mTime;
     private LinearLayoutManager mLayoutManager;
-    private static String APPKEY="29d35d2d909845fd91dd71d12a460723";
-    private int total;
-    private JSONArray mData;
     boolean isVertical=true;
     private GridLayoutManager mGridLayoutManager;
     private SpacesDoubleDecoration mSpacesDoubleDecoration;
@@ -77,7 +73,6 @@ public class TextFragment extends BaseFragment {
 
     @Override
     public void initView(View inflate, Bundle savedInstanceState) {
-        mTime = System.currentTimeMillis() / 1000;
         mLayoutManager = new LinearLayoutManager(getContext());
         mGridLayoutManager=new GridLayoutManager(getContext(),2);
         if(isVertical){
@@ -88,8 +83,8 @@ public class TextFragment extends BaseFragment {
         mTextAdapter = new TextAdapter(getContext(),jokeInfoList);
         mRvJoke.setAdapter(mTextAdapter);
         mRvJoke.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
-        mRvJoke.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
-        getInfo();
+        mRvJoke.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        getOneDayInfo();
         setListener();
     }
 
@@ -98,9 +93,7 @@ public class TextFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 jokeInfoList.clear();
-                page=0;
                 getOneDayInfo();
-                mSw.setRefreshing(false);
             }
         });
 
@@ -113,119 +106,60 @@ public class TextFragment extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
-//                if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
-//                    page++;
-//                    getOneDayInfo();
-//                }
                 if(isVertical){
                     int lastVisibleItemPosition = mLayoutManager.findLastVisibleItemPosition();
                     if(lastVisibleItemPosition==mLayoutManager.getItemCount()-1){
-                        page++;
-                        getInfo();
+//                        getOneDayInfo();
                     }
                 }else {
                     //格子布局
                     int lastVisibleItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
                     if(lastVisibleItemPosition==mGridLayoutManager.getItemCount()-1){
-                        page++;
-                        getInfo();
+//                        getOneDayInfo();
                     }
                 }
             }
         });
     }
 
-    private void getInfo() {
-        NetworkUtils.networkGet(url)
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    mData = jsonObject.optJSONArray("data");
-                    total= mData.length();
-                    if(mData !=null){
-                        getOneDayInfo(mData);
-                        Log.i("data", mData.toString());
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void getOneDayInfo(JSONArray data) {
-        String url="http://v3.wufazhuce.com:8000/api/onelist/ "+ data.optInt(page) + "/0?cchannel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
-        if(page>=total){
-            Toast.makeText(getContext(), "没有更多了—_-", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        NetworkUtils.networkGet(url)
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
-                Log.i("err",e.toString());
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(response);
-                    JSONObject data = jsonObject.optJSONObject("data");
-                    JSONArray content_list = data.optJSONArray("content_list");
-                    Gson gson = new Gson();
-                    List<TextInfo> jokeList = gson.fromJson(content_list.toString(), new TypeToken<List<TextInfo>>() {
-                    }.getType());
-                    jokeInfoList.addAll(jokeList);
-                    mTextAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     private void getOneDayInfo() {
-        if(mData==null){
-            return;
-        }
-        String url="http://v3.wufazhuce.com:8000/api/onelist/ "+ mData.optInt(page) + "/0?cchannel=wdj&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android";
-        if(page>=total){
-            Toast.makeText(getContext(), "没有更多了-_-", Toast.LENGTH_SHORT).show();
-            return;
-        }
         NetworkUtils.networkGet(url)
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
-            }
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getContext(), "请求错误", Toast.LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public void onResponse(String response, int id) {
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(response);
-                    JSONObject data = jsonObject.optJSONObject("data");
-                    JSONArray content_list = data.optJSONArray("content_list");
-                    Gson gson = new Gson();
-                    List<TextInfo> jokeList = gson.fromJson(content_list.toString(), new TypeToken<List<TextInfo>>() {
-                    }.getType());
-                    jokeInfoList.addAll(jokeList);
-                    mTextAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject data = jsonObject.optJSONObject("data");
+
+                            JSONArray tech = data.optJSONArray("dy");
+                            JSONArray sports = data.optJSONArray("auto");
+                            JSONArray auto = data.optJSONArray("sports");
+                            JSONArray money = data.optJSONArray("money");
+                            Gson gson = new Gson();
+                            List<NewsInfo> techlist = gson.fromJson(tech.toString(), new TypeToken<List<NewsInfo>>() {}.getType());
+                            List<NewsInfo> moneylist = gson.fromJson(money.toString(), new TypeToken<List<NewsInfo>>() {}.getType());
+                            List<NewsInfo> sportlist = gson.fromJson(sports.toString(), new TypeToken<List<NewsInfo>>() {}.getType());
+                            List<NewsInfo> autolist = gson.fromJson(auto.toString(), new TypeToken<List<NewsInfo>>() {}.getType());
+
+                            jokeInfoList.addAll(techlist);
+                            jokeInfoList.addAll(moneylist);
+                            jokeInfoList.addAll(sportlist);
+                            jokeInfoList.addAll(autolist);
+
+                            mSw.setRefreshing(false);
+                            mTextAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }

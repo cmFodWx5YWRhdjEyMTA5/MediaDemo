@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,17 +198,14 @@ public class RecAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case R.id.tv_video:
                     mCategroyCallBack.choosePos(1);
                     break;
-                case R.id.tv_txt:
+                case R.id.tv_image:
                     mCategroyCallBack.choosePos(2);
                     break;
-                case R.id.tv_image:
+                case R.id.tv_joke:
                     mCategroyCallBack.choosePos(3);
                     break;
-                case R.id.tv_joke:
-                    mCategroyCallBack.choosePos(4);
-                    break;
                 case R.id.tv_essay:
-                    mCategroyCallBack.choosePos(5);
+                    mCategroyCallBack.choosePos(4);
                     break;
             }
         }
